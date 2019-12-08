@@ -3,7 +3,7 @@ namespace DataAccessLayer.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initial : DbMigration
+    public partial class inital : DbMigration
     {
         public override void Up()
         {
@@ -44,9 +44,11 @@ namespace DataAccessLayer.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        Name = c.String(maxLength: 64),
-                        Description = c.String(maxLength: 512),
-                        Location = c.String(maxLength: 64),
+                        Name = c.String(nullable: false, maxLength: 64),
+                        Description = c.String(nullable: false, maxLength: 512),
+                        Salary = c.Int(nullable: false),
+                        CreationTime = c.DateTime(nullable: false),
+                        Location = c.String(nullable: false, maxLength: 64),
                         CompanyId = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)

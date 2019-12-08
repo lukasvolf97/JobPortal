@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.DataTransferObjects.Common;
+using System;
 using System.Collections.Generic;
 
 namespace BusinessLayer.DataTransferObjects
@@ -14,6 +15,10 @@ namespace BusinessLayer.DataTransferObjects
         public string Location { get; set; }
 
         public CompanyDTO Company { get; set; }
+
+        public DateTime CreationTime { get; set; }
+
+        public int Salary { get; set; }
 
         public ICollection<JobApplicationDTO> JobApplications { get; set; }
     }

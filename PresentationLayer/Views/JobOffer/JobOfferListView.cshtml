@@ -1,4 +1,6 @@
-﻿@model PresentationLayer.Models.JobOfferListViewModel
+﻿@using X.PagedList.Mvc
+@using Humanizer
+@model PresentationLayer.Models.JobOfferListViewModel
 
 @{
     ViewBag.Title = "JobOfferListView";
@@ -11,26 +13,56 @@
     @Styles.Render("~/Content/themes/base/jquery-ui.css")
 }
 
-<div class="row">
-    <div class="col-md-9">
-        <div class="card-deck mb-3 text-center">
+<div class="row w-100 p-3">
+        <div class="col-lg-12">
+        <div class="input-group mb-4 border rounded-pill p-1">
+            <input type="search" id="search_id" placeholder="What're you searching for?" aria-describedby="button-addon4" class="col-lg-12 form-control bg-none border-0">
+        </div>
+            </div>
+    </div>
+<div class="row w-100 p-3">
+    <div class="col-lg-12">
+        <div class="list-group text-center">
             @{foreach (var jobOffer in Model.JobOffers)
                 {
-                    <div class="col-md-4 d-flex py-2">
-                        <div class="card clickable-area" @("onclick=GoToDetail('" + jobOffer.Id + "')")>
+                    //<div class="col col-lg-12 py-2">
+                    <div class="list-group-item list-group-item-action clickable-area" style="height: 120px;" @("onclick=GoToDetail('" + jobOffer.Id + "')")>
+                        <div class="d-flex w-100 justify-content-between ">
+                            <h3 class="mb-3" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="thumbnail-label">@jobOffer.Name</h3>
+                            <small>@jobOffer.CreationTime.Humanize()</small>
+                        </div>
 
-                            <div class="card-body">
-                                <h5 class="card-title" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="thumbnail-label">@jobOffer.Name</h5>
 
-                                <p class="card-text" style="height: 80px; width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: normal; text-align: justify;">
-                                    @jobOffer.Description
-                                </p>
-                            </div>
+                        @if (jobOffer.Company.Location != null)
+                        {
+                            <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; text-overflow: ellipsis; white-space: normal;">
+                                @jobOffer.Company.Name (Location: @jobOffer.Company.Location, Phone Number: @jobOffer.Company.PhoneNumber)
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; text-overflow: ellipsis; white-space: normal;">
+                                @jobOffer.Company.Name (Phone Number: @jobOffer.Company.PhoneNumber)
+                            </p>
+                        }
+                        <div class="d-flex w-100 justify-content-between ">
+                            <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; ellipsis; white-space: normal;">
+                                Location: @jobOffer.Location
+                            </p>
+                            <span class="badge badge-pill badge-warning">@jobOffer.Salary €/month</span>
                         </div>
                     </div>
+                    //</div>
                 }}
         </div>
     </div>
+</div>
+<div class="row justify-content-center">
+    @Html.PagedListPager(Model.JobOffers, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
+    })
 </div>
 
 <script>

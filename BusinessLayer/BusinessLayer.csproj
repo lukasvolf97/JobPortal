@@ -85,6 +85,7 @@
     <Compile Include="DataTransferObjects\Common\FilterDtoBase.cs" />
     <Compile Include="DataTransferObjects\Common\QueryResultDto.cs" />
     <Compile Include="DataTransferObjects\CompanyDTO.cs" />
+    <Compile Include="DataTransferObjects\CompanyListDTO.cs" />
     <Compile Include="DataTransferObjects\Filters\CompanyFilterDTO.cs" />
     <Compile Include="DataTransferObjects\Filters\JobApplicationFilterDTO.cs" />
     <Compile Include="DataTransferObjects\Filters\JobOfferFilterDTO.cs" />

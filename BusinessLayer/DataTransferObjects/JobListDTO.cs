@@ -11,6 +11,6 @@ namespace BusinessLayer.DataTransferObjects
 
         public string Location { get; set; }
 
-        public CompanyDTO Company { get; set; }
+        public CompanyListDTO Company { get; set; }
     }
 }

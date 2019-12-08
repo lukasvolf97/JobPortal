@@ -28,10 +28,9 @@ namespace PresentationLayer.Controllers
             var filter = Session[FilterSessionKey] as JobOfferFilterDTO ?? new JobOfferFilterDTO { PageSize = PageSize };
             filter.RequestedPageNumber = page;
 
-            //var test = await jobOfferFacade.ListAllJobOffers();
             var allJobOffers = await jobOfferFacade.GetJobOffersAsync(new JobOfferFilterDTO());
+
             var result = await jobOfferFacade.GetJobOffersAsync(filter);
-           
             var model = InitializeProductListViewModel(result, (int)allJobOffers.TotalItemsCount);
             return View("JobOfferListView", model);
         }
@@ -42,7 +41,7 @@ namespace PresentationLayer.Controllers
             model.Filter.PageSize = PageSize;
             Session[FilterSessionKey] = model.Filter;
             
-            var allJobOffers = await jobOfferFacade.ListAllJobOffers();
+            var allJobOffers = await jobOfferFacade.GetJobOffersAsync(new JobOfferFilterDTO());
             var result = await jobOfferFacade.GetJobOffersAsync(model.Filter);
             var newModel = InitializeProductListViewModel(result, (int)allJobOffers.TotalItemsCount);
             return View("JobOfferListView", newModel);

@@ -16,14 +16,24 @@ namespace DataAccessLayer.Entities
         [NotMapped]
         public string TableName { get; } = nameof(JobPortalDbContext.JobOffers);
 
+        [Required]
         [MaxLength(64)]
         public string Name { get; set; }
 
+        [Required]
         [MaxLength(512)]
         public string Description { get; set; }
 
         public List<string> EntryQuestions { get; set; }
 
+        [Required]
+        public int Salary { get; set; }
+
+        [Required]
+        [DataType(DataType.Date)]
+        public DateTime CreationTime { get; set; } = DateTime.Now;
+
+        [Required]
         [MaxLength(64)]
         public string Location { get; set; }
 

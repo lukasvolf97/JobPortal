@@ -5,6 +5,7 @@ using DataAccessLayer.Entities;
 using Infrastructure.Query;
 using Infrastructure.Query.Predicates;
 using Infrastructure.Query.Predicates.Operators;
+using System;
 
 namespace BusinessLayer.QueryObjects.Common
 {
@@ -14,7 +15,7 @@ namespace BusinessLayer.QueryObjects.Common
 
         protected override IQuery<JobOffer> ApplyWhereClause(IQuery<JobOffer> query, JobOfferFilterDTO filter)
         {
-            return filter.CompanyId.Equals(null)
+            return filter.CompanyId.Equals(Guid.Empty)
                  ? query
                  : query.Where(new SimplePredicate(nameof(JobOffer.CompanyId), ValueComparingOperator.Equal, filter.CompanyId));
         }

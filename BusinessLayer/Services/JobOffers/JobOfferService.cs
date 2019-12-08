@@ -44,7 +44,14 @@ namespace BusinessLayer.Services.JobOffers
 
         public async Task<QueryResultDto<JobOfferDTO, JobOfferFilterDTO>> ListJobOffersAsync(JobOfferFilterDTO filter)
         {
-            return await Query.ExecuteQuery(filter);
+            var result = await Query.ExecuteQuery(filter);
+            var items = result.Items.ToList();
+            for (int i = 0; i < result.Items.Count(); i++)
+            {
+                items[i] = await GetAsync(items[i].Id, true);
+            }
+            result.Items = items;
+            return result;
         }
     }
 }

@@ -22,6 +22,9 @@ namespace DataAccessLayer.Migrations
             {
                 Id = Guid.Parse("aa05dc64-5c17-40ce-a916-175165b9b91f"),
                 Name = "Job1",
+                Salary = 200,
+                Location = "UK",
+                Description = "description"
                 //JobApplications = new List<JobApplication>()
             };
 
@@ -29,7 +32,10 @@ namespace DataAccessLayer.Migrations
             {
                 Id = Guid.Parse("aa05dc64-5d17-40ce-a916-175165b9b91f"),
                 Name = "Job2",
-               // JobApplications = new List<JobApplication>()
+                Salary = 1000,
+                Location = "US",
+                Description = "description"
+                // JobApplications = new List<JobApplication>()
             };
 
             var User1 = new Jobseeker
@@ -62,6 +68,7 @@ namespace DataAccessLayer.Migrations
                 Id = Guid.Parse("aa05dc64-5c07-40fe-a916-175165b9b91f"),
                 Name = "first",
                 Description = "ASD",
+                PhoneNumber = "0908754122",
                 JobOffers = new List<JobOffer> { Job1 },
                 //JobApplications = new List<JobApplication>()
             };
@@ -72,6 +79,7 @@ namespace DataAccessLayer.Migrations
                 Name = "second",
                 Description = "ASDED",
                 Location = "UK",
+                PhoneNumber = "0906445442",
                 JobOffers = new List<JobOffer> { Job2 }
             };
 
