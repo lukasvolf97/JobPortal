@@ -5,6 +5,10 @@ namespace BusinessLayer.DataTransferObjects
 {
     public class UserRegistrationDTO : DtoBase
     {
+        [Required(ErrorMessage = "Email is required!")]
+        [EmailAddress(ErrorMessage = "This is not valid email address!")]
+        public string Email { get; set; }
+
         [Required(ErrorMessage = "Username is required!")]
         public string Username { get; set; }
 

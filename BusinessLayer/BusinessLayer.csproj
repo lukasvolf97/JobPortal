@@ -86,17 +86,19 @@
     <Compile Include="DataTransferObjects\Common\QueryResultDto.cs" />
     <Compile Include="DataTransferObjects\CompanyDTO.cs" />
     <Compile Include="DataTransferObjects\CompanyListDTO.cs" />
+    <Compile Include="DataTransferObjects\CompanyRegistrationDTO.cs" />
     <Compile Include="DataTransferObjects\Filters\CompanyFilterDTO.cs" />
     <Compile Include="DataTransferObjects\Filters\JobApplicationFilterDTO.cs" />
     <Compile Include="DataTransferObjects\Filters\JobOfferFilterDTO.cs" />
     <Compile Include="DataTransferObjects\Filters\JobseekerFilterDTO.cs" />
+    <Compile Include="DataTransferObjects\Filters\UserFilterDTO.cs" />
     <Compile Include="DataTransferObjects\JobApplicationDTO.cs" />
     <Compile Include="DataTransferObjects\JobListDTO.cs" />
     <Compile Include="DataTransferObjects\JobOfferDTO.cs" />
     <Compile Include="DataTransferObjects\JobseekerDTO.cs" />
-    <Compile Include="DataTransferObjects\UserDTO.cs" />
-    <Compile Include="DataTransferObjects\UserProfileDTO.cs" />
     <Compile Include="DataTransferObjects\UserRegistrationDTO.cs" />
+    <Compile Include="DataTransferObjects\UserProfileDTO.cs" />
+    <Compile Include="DataTransferObjects\JobseekerRegistrationDTO.cs" />
     <Compile Include="Facades\Common\FacadeBase.cs" />
     <Compile Include="Facades\CompanyFacade.cs" />
     <Compile Include="Facades\JobApplicationFacade.cs" />
@@ -118,6 +120,9 @@
     <Compile Include="Services\JobOffers\JobOfferService.cs" />
     <Compile Include="Services\Jobseekers\IJobseekerService.cs" />
     <Compile Include="Services\Jobseekers\JobseekerService.cs" />
+    <Compile Include="Services\Users\IUserService.cs" />
+    <Compile Include="Services\Users\UserService.cs" />
+    <Compile Include="DataTransferObjects\UserDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataAccessLayer\DataAccessLayer.csproj">

@@ -3,6 +3,7 @@ using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.Facades.Common;
 using BusinessLayer.Services.Companies;
+using BusinessLayer.Services.Users;
 using Infrastructure.UnitOfWork;
 using System;
 using System.Collections.Generic;
@@ -16,9 +17,11 @@ namespace BusinessLayer.Facades
     {
 
         private readonly ICompanyService companyService;
-        public CompanyFacade(IUnitOfWorkProvider unitOfWorkProvider, ICompanyService companyService) : base(unitOfWorkProvider)
+        private readonly IUserService userService;
+        public CompanyFacade(IUnitOfWorkProvider unitOfWorkProvider, IUserService userService, ICompanyService companyService) : base(unitOfWorkProvider)
         {
             this.companyService = companyService;
+            this.userService = userService;
         }
 
         public async Task<QueryResultDto<CompanyDTO, CompanyFilterDTO>> ListAllCompanies()
@@ -56,5 +59,38 @@ namespace BusinessLayer.Facades
                 await uow.Commit();
             }
         }
+        public async Task<Guid> RegisterCompany(CompanyRegistrationDTO companyRegistrationDTO)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                try
+                {
+                    var id = await userService.RegisterUserAsync(companyRegistrationDTO);
+                    await uow.Commit();
+                    return id;
+                }
+                catch (ArgumentException)
+                {
+                    throw;
+                }
+            }
+        }
+
+        public async Task<(bool success, string roles)> Login(string username, string password)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return await userService.AuthorizeUserAsync(username, password);
+            }
+        }
+
+        public async Task<UserDTO> GetUserAccordingToUsernameAsync(string username)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return await userService.GetUserAccordingToUsernameAsync(username);
+            }
+        }
+
     }
 }

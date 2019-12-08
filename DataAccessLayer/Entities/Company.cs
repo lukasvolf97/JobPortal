@@ -7,7 +7,7 @@ using System.Text;
 
 namespace DataAccessLayer.Entities
 {
-    public class Company : User, IEntity
+    public class Company : User
     {
 
         [NotMapped]

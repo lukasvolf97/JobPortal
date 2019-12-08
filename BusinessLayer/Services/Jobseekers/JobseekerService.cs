@@ -40,7 +40,7 @@ namespace BusinessLayer.Services.Jobseekers
 
         protected override async Task<Jobseeker> GetWithIncludesAsync(Guid entityId)
         {
-            return await Repository.GetAsync(entityId, nameof(Jobseeker.JobApplications), nameof(Jobseeker.HighestEducation));
+            return await Repository.GetAsync(entityId, /*nameof(Jobseeker.JobApplications),*/ nameof(Jobseeker.HighestEducation));
         }
     }
 }

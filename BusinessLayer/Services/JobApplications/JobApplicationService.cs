@@ -45,7 +45,7 @@ namespace BusinessLayer.Services.JobOffers
 
         protected override async Task<JobApplication> GetWithIncludesAsync(Guid entityId)
         {
-            return await Repository.GetAsync(entityId, /*nameof(JobApplication.Company),*/ nameof(JobApplication.JobOffer), nameof(JobApplication.Jobseeker));
+            return await Repository.GetAsync(entityId, /*nameof(JobApplication.Company),*/ nameof(JobApplication.JobOffer)/*, nameof(JobApplication.Jobseeker)*/);
         }
     }
 }

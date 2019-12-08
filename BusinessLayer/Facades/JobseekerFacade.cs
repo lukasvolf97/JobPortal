@@ -3,6 +3,7 @@ using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.Facades.Common;
 using BusinessLayer.Services.Jobseekers;
+using BusinessLayer.Services.Users;
 using DataAccessLayer.Enums;
 using Infrastructure.UnitOfWork;
 using System;
@@ -17,9 +18,11 @@ namespace BusinessLayer.Facades
     {
 
         private readonly IJobseekerService jobseekerService;
-        public JobseekerFacade(IUnitOfWorkProvider unitOfWorkProvider, IJobseekerService jobseekerService) : base(unitOfWorkProvider)
+        private readonly IUserService userService;
+        public JobseekerFacade(IUnitOfWorkProvider unitOfWorkProvider, IJobseekerService jobseekerService, IUserService userService) : base(unitOfWorkProvider)
         {
             this.jobseekerService = jobseekerService;
+            this.userService = userService;
         }
 
         public async Task<QueryResultDto<JobseekerDTO, JobseekerFilterDTO>> ListAllJobseekers()
@@ -73,6 +76,39 @@ namespace BusinessLayer.Facades
             {
                 jobseekerService.Delete(jobseekerId);
                 await uow.Commit();
+            }
+        }
+
+        public async Task<Guid> RegisterJobSeeker(JobseekerRegistrationDTO jobseekerRegistrationDTO)
+        {
+            using (var uow = UnitOfWorkProvider.Create())
+            {
+                try
+                {
+                    var id = await userService.RegisterUserAsync(jobseekerRegistrationDTO);
+                    await uow.Commit();
+                    return id;
+                }
+                catch (ArgumentException)
+                {
+                    throw;
+                }
+            }
+        }
+
+        public async Task<(bool success, string roles)> Login(string username, string password)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return await userService.AuthorizeUserAsync(username, password);
+            }
+        }
+
+        public async Task<UserDTO> GetUserAccordingToUsernameAsync(string username)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return await userService.GetUserAccordingToUsernameAsync(username);
             }
         }
     }

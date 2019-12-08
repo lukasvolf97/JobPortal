@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Entities
 {
-    public abstract class User
+    public class User: IEntity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid Id { get; set; }
 
         [NotMapped]
-        public string TableName { get; } = nameof(DataAccessLayer.Entities.User);
+        public string TableName { get; } = nameof(JobPortalDbContext.Users);
 
         [MaxLength(64)]
         public string UserName { get; set; }

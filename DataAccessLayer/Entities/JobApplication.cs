@@ -24,10 +24,10 @@ namespace DataAccessLayer.Entities
         public Guid JobOfferId { get; set; }
 
         public virtual JobOffer JobOffer { get; set; }
-
+        /*
         [ForeignKey(nameof(Jobseeker))]
         public Guid JobseekerId { get; set; }
 
-        public virtual Jobseeker Jobseeker { get; set; }
+        public virtual Jobseeker Jobseeker { get; set; }*/
     }
 }

@@ -9,7 +9,7 @@ using Infrastructure;
 
 namespace DataAccessLayer.Entities
 {
-    public class Jobseeker : User, IEntity
+    public class Jobseeker : User
     {
         [NotMapped]
         public new string TableName { get; } = nameof(JobPortalDbContext.Jobseekers);

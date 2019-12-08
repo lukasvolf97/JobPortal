@@ -18,8 +18,12 @@ namespace BusinessLayer.Config
             config.CreateMap<Company, CompanyDTO>().ReverseMap();
             config.CreateMap<JobOffer, JobListDTO>();
             config.CreateMap<Jobseeker, UserProfileDTO>();
+            config.CreateMap<Jobseeker, JobseekerRegistrationDTO>().ReverseMap();
             config.CreateMap<User, UserDTO>().ReverseMap();
-            config.CreateMap<User, UserRegistrationDTO>();
+            config.CreateMap<User, JobseekerRegistrationDTO>().ReverseMap();
+            config.CreateMap<User, CompanyRegistrationDTO>().ReverseMap();
+            config.CreateMap<Company, JobseekerRegistrationDTO>().ReverseMap();
+            config.CreateMap<Company, CompanyRegistrationDTO>().ReverseMap();
             config.CreateMap<QueryResult<JobOffer>, QueryResultDto<JobOfferDTO, JobOfferFilterDTO>>();
             config.CreateMap<QueryResult<Jobseeker>, QueryResultDto<JobseekerDTO, JobseekerFilterDTO>>();
             config.CreateMap<QueryResult<Company>, QueryResultDto<CompanyDTO, CompanyFilterDTO>>();

@@ -51,7 +51,7 @@ namespace DataAccessLayer.Migrations
                 FirstName = "Peter",
                 LastName = "ASD",
                 HighestEducation = EducationType.Graduation,
-                JobApplications = new List<JobApplication>()
+                //JobApplications = new List<JobApplication>()
             };
 
             var User3 = new Jobseeker
@@ -60,7 +60,7 @@ namespace DataAccessLayer.Migrations
                 FirstName = "Juraj",
                 LastName = "ASD",
                 Email = "mail@.com",
-                JobApplications = new List<JobApplication>()
+                //JobApplications = new List<JobApplication>()
             };
 
             var Comp1 = new Company
@@ -88,7 +88,7 @@ namespace DataAccessLayer.Migrations
                 Id = Guid.Parse("aa05dc64-5c27-40ce-a916-175165b9b91f"),
                 JobOffer = Job1,
                 //Company = Comp1,
-                Jobseeker = User2,
+                //Jobseeker = User2,
                 ApplicationStatus = Enums.ApplicationStatus.Undecided
             };
 
@@ -97,7 +97,7 @@ namespace DataAccessLayer.Migrations
                 Id = Guid.Parse("aa05dc84-5c27-40ce-a916-175165b9b91f"),
                 JobOffer = Job1,
                 //Company = Comp1,
-                Jobseeker = User3,
+                //Jobseeker = User3,
                 ApplicationStatus = Enums.ApplicationStatus.Declined
             };
 
@@ -105,8 +105,8 @@ namespace DataAccessLayer.Migrations
             //Comp1.JobApplications.Add(JobApplication1);
             //Comp1.JobApplications.Add(JobApplication2);
 
-            User2.JobApplications.Add(JobApplication1);
-            User3.JobApplications.Add(JobApplication2);
+            //User2.JobApplications.Add(JobApplication1);
+            //User3.JobApplications.Add(JobApplication2);
 
             //Job1.JobApplications.Add(JobApplication1);
             //Job1.JobApplications.Add(JobApplication2);

@@ -16,14 +16,14 @@ namespace BusinessLayer.QueryObjects
 
         protected override IQuery<JobApplication> ApplyWhereClause(IQuery<JobApplication> query, JobApplicationFilterDTO filter)
         {
-            return filter.CompanyId.Equals(null) || filter.JobseekerId.Equals(null)
+            return query; /*filter.CompanyId.Equals(null) || filter.JobseekerId.Equals(null)
                  ? query
-                 : query.Where(new SimplePredicate(nameof(JobApplication.Jobseeker), ValueComparingOperator.Equal, filter.JobseekerId)
+                 : query.Where(new SimplePredicate(nameof(JobApplication.Jobseeker), ValueComparingOperator.Equal, filter.JobseekerId)*/
                  /*: query.Where(new CompositePredicate(new List<IPredicate>() {
                      new SimplePredicate(nameof(JobApplication.Company), ValueComparingOperator.Equal, filter.CompanyId),
                      new SimplePredicate(nameof(JobApplication.Jobseeker), ValueComparingOperator.Equal, filter.JobseekerId),
                  })*/
-                 );
+                 //);
         }
     }
  }

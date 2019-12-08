@@ -8,34 +8,30 @@ namespace DataAccessLayer.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.Admins",
+                "dbo.Users",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        FirstName = c.String(maxLength: 64),
-                        LastName = c.String(maxLength: 64),
                         UserName = c.String(maxLength: 64),
                         Email = c.String(),
                         PasswordSalt = c.String(maxLength: 100),
                         PasswordHash = c.String(maxLength: 100),
                         Roles = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
-            
-            CreateTable(
-                "dbo.Companies",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
+                        FirstName = c.String(maxLength: 64),
+                        LastName = c.String(maxLength: 64),
                         Name = c.String(maxLength: 64),
                         Description = c.String(maxLength: 512),
                         Location = c.String(maxLength: 64),
                         PhoneNumber = c.String(maxLength: 15),
-                        UserName = c.String(maxLength: 64),
-                        Email = c.String(),
-                        PasswordSalt = c.String(maxLength: 100),
-                        PasswordHash = c.String(maxLength: 100),
-                        Roles = c.String(),
+                        TitlesBeforeName = c.String(maxLength: 32),
+                        TitlesAfterName = c.String(maxLength: 32),
+                        FirstName1 = c.String(maxLength: 64),
+                        LastName1 = c.String(maxLength: 64),
+                        MobilePhoneNumber = c.String(),
+                        Address = c.String(maxLength: 1024),
+                        BirthDate = c.DateTime(),
+                        HighestEducation = c.Int(),
+                        Discriminator = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -52,7 +48,7 @@ namespace DataAccessLayer.Migrations
                         CompanyId = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Companies", t => t.CompanyId, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.CompanyId, cascadeDelete: true)
                 .Index(t => t.CompanyId);
             
             CreateTable(
@@ -62,50 +58,27 @@ namespace DataAccessLayer.Migrations
                         Id = c.Guid(nullable: false),
                         ApplicationStatus = c.Int(nullable: false),
                         JobOfferId = c.Guid(nullable: false),
-                        JobseekerId = c.Guid(nullable: false),
+                        Jobseeker_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.JobOffers", t => t.JobOfferId, cascadeDelete: true)
-                .ForeignKey("dbo.Jobseekers", t => t.JobseekerId, cascadeDelete: true)
+                .ForeignKey("dbo.Users", t => t.Jobseeker_Id)
                 .Index(t => t.JobOfferId)
-                .Index(t => t.JobseekerId);
-            
-            CreateTable(
-                "dbo.Jobseekers",
-                c => new
-                    {
-                        Id = c.Guid(nullable: false),
-                        TitlesBeforeName = c.String(maxLength: 32),
-                        TitlesAfterName = c.String(maxLength: 32),
-                        FirstName = c.String(maxLength: 64),
-                        LastName = c.String(maxLength: 64),
-                        MobilePhoneNumber = c.String(),
-                        Address = c.String(maxLength: 1024),
-                        BirthDate = c.DateTime(nullable: false),
-                        HighestEducation = c.Int(nullable: false),
-                        UserName = c.String(maxLength: 64),
-                        Email = c.String(),
-                        PasswordSalt = c.String(maxLength: 100),
-                        PasswordHash = c.String(maxLength: 100),
-                        Roles = c.String(),
-                    })
-                .PrimaryKey(t => t.Id);
+                .Index(t => t.Jobseeker_Id);
             
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.JobApplications", "JobseekerId", "dbo.Jobseekers");
+            DropForeignKey("dbo.JobApplications", "Jobseeker_Id", "dbo.Users");
             DropForeignKey("dbo.JobApplications", "JobOfferId", "dbo.JobOffers");
-            DropForeignKey("dbo.JobOffers", "CompanyId", "dbo.Companies");
-            DropIndex("dbo.JobApplications", new[] { "JobseekerId" });
+            DropForeignKey("dbo.JobOffers", "CompanyId", "dbo.Users");
+            DropIndex("dbo.JobApplications", new[] { "Jobseeker_Id" });
             DropIndex("dbo.JobApplications", new[] { "JobOfferId" });
             DropIndex("dbo.JobOffers", new[] { "CompanyId" });
-            DropTable("dbo.Jobseekers");
             DropTable("dbo.JobApplications");
             DropTable("dbo.JobOffers");
-            DropTable("dbo.Companies");
-            DropTable("dbo.Admins");
+            DropTable("dbo.Users");
         }
     }
 }

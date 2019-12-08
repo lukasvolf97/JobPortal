@@ -18,6 +18,7 @@ namespace DataAccessLayer
         {
             Database.CreateIfNotExists();
         }
+        public DbSet<User> Users { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Jobseeker> Jobseekers { get; set; }
         public DbSet<Company> Companies { get; set; }
