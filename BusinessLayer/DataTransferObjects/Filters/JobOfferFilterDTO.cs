@@ -14,5 +14,9 @@ namespace BusinessLayer.DataTransferObjects.Filters
         public string Location { get; set; }
 
         public Guid CompanyId { get; set; }
+
+        public decimal MinimalSalary { get; set; } = 0;
+
+        public decimal MaximalSalary { get; set; } = decimal.MaxValue;
     }
 }

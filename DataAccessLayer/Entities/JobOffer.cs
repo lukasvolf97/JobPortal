@@ -31,7 +31,7 @@ namespace DataAccessLayer.Entities
 
         [Required]
         [DataType(DataType.Date)]
-        public DateTime CreationTime { get; set; } = DateTime.Now;
+        public DateTime Date { get; set; } = DateTime.Now;
 
         [Required]
         [MaxLength(64)]

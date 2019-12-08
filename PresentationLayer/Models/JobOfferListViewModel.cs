@@ -7,7 +7,7 @@ namespace PresentationLayer.Models
 {
     public class JobOfferListViewModel
     {
-        public string[] JobOfferSortCriteria => new[] { nameof(JobOfferDTO.Name), nameof(JobOfferDTO.Location) };
+        public string[] JobOfferSortCriteria => new[] { nameof(JobOfferDTO.Salary), nameof(JobOfferDTO.Date) };
 
         public IPagedList<JobOfferDTO> JobOffers { get; set; }
 
