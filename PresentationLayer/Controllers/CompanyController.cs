@@ -50,7 +50,7 @@ namespace PresentationLayer.Controllers
         {
             return new CompanyListViewModel
             {
-                JobOffers = new StaticPagedList<CompanyDTO>(result.Items, result.RequestedPageNumber ?? 1, PageSize, totalItemsCount),
+                Companies = new StaticPagedList<CompanyDTO>(result.Items, result.RequestedPageNumber ?? 1, PageSize, totalItemsCount),
                 Filter = result.Filter
             };
         }

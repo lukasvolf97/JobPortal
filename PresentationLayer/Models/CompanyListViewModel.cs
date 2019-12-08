@@ -13,7 +13,7 @@ namespace PresentationLayer.Models
     {
         public string[] CompanySortCriteria => new[] { nameof(CompanyDTO.Name), nameof(CompanyDTO.Location) };
 
-        public IPagedList<CompanyDTO> JobOffers { get; set; }
+        public IPagedList<CompanyDTO> Companies { get; set; }
 
         public CompanyFilterDTO Filter { get; set; }
 

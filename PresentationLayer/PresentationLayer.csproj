@@ -149,6 +149,7 @@
     <Compile Include="App_Start\Windsor\PresentationLayerInstaller.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Windsor\WindsorControllerFactory.cs" />
+    <Compile Include="Controllers\AdminJobOfferEditController.cs" />
     <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JobOfferController.cs" />
@@ -156,6 +157,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\Attributes\MultiPostActionAttribute.cs" />
+    <Compile Include="Models\AdminJobOfferEditModel.cs" />
+    <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\CompanyListViewModel.cs" />
     <Compile Include="Models\JobOfferListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -310,10 +313,12 @@
     <Content Include="Views\JobOffer\JobOfferListView.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Admin\AdminJobOfferEditView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Helpers\Cookies\" />
+    <Folder Include="Views\AdminJobOfferEdit\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
