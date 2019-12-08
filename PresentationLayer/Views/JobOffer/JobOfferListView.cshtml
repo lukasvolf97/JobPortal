@@ -1,0 +1,50 @@
+﻿@using System.Web.Mvc.Html
+@using X.PagedList.Mvc
+@model PresentationLayer.Models.JobOfferListViewModel
+
+@{
+    ViewBag.Title = "ProductListView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>JobOfferListView</h2>
+
+<div class="row">
+    <div class="col-md-3">
+        @using (Html.BeginForm())
+        {
+            <div class="form-group form-row col-md-12">
+                @Html.LabelFor(model => model.Filter.Name, "Job Offer Name", new { @class = "col-form-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.EditorFor(model => model.Filter.Name, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Filter.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group form-row col-md-12">
+                @Html.LabelFor(model => model.Filter.SortCriteria, "Sort by:", new { @class = "col-form-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.Filter.SortCriteria, Model.AllSortCriteria, "Select...", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Filter.SortCriteria, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-check form-row">
+                @Html.LabelFor(model => model.Filter.SortAscending, "Ascending", new { @class = "form-check-label" })
+                @Html.CheckBoxFor(model => model.Filter.SortAscending, new { htmlAttributes = new { @class = "form-check-input" } })
+                @Html.ValidationMessageFor(model => model.Filter.SortAscending, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="row btn-toolbar justify-content-around" role="toolbar" style="margin-bottom:5px">
+                <div class="btn-group">
+                    <input type="button" class="btn btn-danger" value="Clear" onclick="resetRange();location.href = '@Url.Action("ClearFilter", "JobOffer")'" />
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-success" id="btnSubmit" type="submit" onclick="saveRange()">Filter </button>
+                </div>
+            </div>
+        }
+        
+    </div>
+</div>

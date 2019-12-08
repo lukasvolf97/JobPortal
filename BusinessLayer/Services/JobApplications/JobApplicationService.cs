@@ -1,0 +1,51 @@
+﻿using AutoMapper;
+using BusinessLayer.DataTransferObjects;
+using BusinessLayer.DataTransferObjects.Filters;
+using BusinessLayer.QueryObjects.Common;
+using BusinessLayer.Services.Common;
+using BusinessLayer.Services.JobApplications;
+using DataAccessLayer.Entities;
+using DataAccessLayer.Enums;
+using Infrastructure;
+using Infrastructure.Query;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace BusinessLayer.Services.JobOffers
+{
+    public class JobApplicationService : CrudQueryServiceBase<JobApplication, JobApplicationDTO, JobApplicationFilterDTO>, IJobApplicationService
+    {
+        public JobApplicationService(IMapper mapper, IRepository<JobApplication> jobApplicationRepository, QueryObjectBase<JobApplicationDTO, JobApplication, JobApplicationFilterDTO, IQuery<JobApplication>> jobApplicationQuery)
+            : base(mapper, jobApplicationRepository, jobApplicationQuery) { }
+
+        public async Task<JobApplicationDTO> GetJobApplicationAccordingToCompanyAsync(Guid companyId)
+        {
+            var queryResult = await Query.ExecuteQuery(new JobApplicationFilterDTO { CompanyId = companyId });
+            return queryResult.Items.SingleOrDefault();
+        }
+
+        public async Task<JobApplicationDTO> GetJobApplicationAccordingToJobOfferAsync(Guid jobOfferId)
+        {
+            var queryResult = await Query.ExecuteQuery(new JobApplicationFilterDTO { JobOfferId = jobOfferId });
+            return queryResult.Items.SingleOrDefault();
+        }
+
+        public async Task<JobApplicationDTO> GetJobApplicationAccordingToJobseekerAsync(Guid jobseekerId)
+        {
+            var queryResult = await Query.ExecuteQuery(new JobApplicationFilterDTO { JobseekerId = jobseekerId });
+            return queryResult.Items.SingleOrDefault();
+        }
+
+        public async Task<JobApplicationDTO> GetJobApplicationAccordingToStatusAsync(ApplicationStatus status)
+        {
+            var queryResult = await Query.ExecuteQuery(new JobApplicationFilterDTO { ApplicationStatus = status });
+            return queryResult.Items.SingleOrDefault();
+        }
+
+        protected override async Task<JobApplication> GetWithIncludesAsync(Guid entityId)
+        {
+            return await Repository.GetAsync(entityId, /*nameof(JobApplication.Company),*/ nameof(JobApplication.JobOffer), nameof(JobApplication.Jobseeker));
+        }
+    }
+}
