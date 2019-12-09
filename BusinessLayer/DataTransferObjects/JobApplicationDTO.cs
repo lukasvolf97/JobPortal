@@ -7,7 +7,7 @@ namespace BusinessLayer.DataTransferObjects
     public class JobApplicationDTO : DtoBase
     {
 
-        public string TableName { get; } = nameof(BusinessLayer.DataTransferObjects.JobApplicationDTO);
+        public string TableName { get; } = nameof(JobApplicationDTO);
 
         public ApplicationStatus ApplicationStatus { get; set; }
 

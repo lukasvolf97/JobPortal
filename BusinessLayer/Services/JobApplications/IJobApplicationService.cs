@@ -38,6 +38,13 @@ namespace BusinessLayer.Services.JobApplications
         Task<JobApplicationDTO> GetJobApplicationAccordingToJobOfferAsync(Guid jobOfferId);
 
         /// <summary>
+        /// Gets job applications according to given filter
+        /// </summary>
+        /// <param name="filter">The job applications filter</param>
+        /// <returns>Filtered results</returns>
+        Task<QueryResultDto<JobApplicationDTO, JobApplicationFilterDTO>> ListJobApplicationsAsync(JobApplicationFilterDTO filter);
+
+        /// <summary>
         /// Gets DTO representing the entity according to ID
         /// </summary>
         /// <param name="entityId">entity ID</param>

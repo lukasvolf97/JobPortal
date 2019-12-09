@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.DataTransferObjects;
+using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.QueryObjects.Common;
 using BusinessLayer.Services.Common;
@@ -46,6 +47,18 @@ namespace BusinessLayer.Services.JobOffers
         protected override async Task<JobApplication> GetWithIncludesAsync(Guid entityId)
         {
             return await Repository.GetAsync(entityId, /*nameof(JobApplication.Company),*/ nameof(JobApplication.JobOffer)/*, nameof(JobApplication.Jobseeker)*/);
+        }
+
+        public async Task<QueryResultDto<JobApplicationDTO, JobApplicationFilterDTO>> ListJobApplicationsAsync(JobApplicationFilterDTO filter)
+        {
+            var result = await Query.ExecuteQuery(filter);
+            var items = result.Items.ToList();
+            for (int i = 0; i < result.Items.Count(); i++)
+            {
+                items[i] = await GetAsync(items[i].Id, true);
+            }
+            result.Items = items;
+            return result;
         }
     }
 }
