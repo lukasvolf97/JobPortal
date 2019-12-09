@@ -3,6 +3,7 @@ using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.Facades;
 using PresentationLayer.Models;
+using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using X.PagedList;
@@ -58,6 +59,12 @@ namespace PresentationLayer.Controllers
         {
             Session[FilterSessionKey] = null;
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<ActionResult> Details(Guid id)
+        {
+            var model = await companyFacade.GetCompanyById(id);
+            return View("CompanyDetailView", model);
         }
     }
 }

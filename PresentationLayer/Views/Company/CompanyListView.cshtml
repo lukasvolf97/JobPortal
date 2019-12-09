@@ -1,18 +1,92 @@
-﻿@model PresentationLayer.Models.CompanyListViewModel
+﻿@using X.PagedList.Mvc
+@using Humanizer
+@model PresentationLayer.Models.CompanyListViewModel
 
 @{
     ViewBag.Title = "CompanyListView";
-     Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>CompanyListView</h2>
+@section head{
+    @Styles.Render("~/Content/css/tree.css")
+    @Styles.Render("~/Content/css/PagedList.css")
+    @Styles.Render("~/Content/themes/base/jquery-ui.css")
+}
 
-<p>
- 
-</p>
-<table class="table">
-    <tr>
-        <th></th>
-    </tr>
+<div class="row w-100 p-3">
+    <div class="col-lg-12">
+        @using (Html.BeginForm())
+        {
 
-</table>
+            <div class="form-group form-row mb-4 border rounded-pill p-1">
+                @Html.EditorFor(model => model.Filter.Name, new { htmlAttributes = new { @placeholder = "What are you looking for?", @class = "col-lg-12 form-control bg-none border-0" } })
+                @Html.ValidationMessageFor(model => model.Filter.Name, "", new { @class = "text-danger" })
+
+            </div>
+
+            <div class="form-group form-row col-md-5">
+                @Html.LabelFor(model => model.Filter.SortCriteria, "Sort by:", new { @class = "col-form-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.Filter.SortCriteria, Model.AllSortCriteria, "Select...", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Filter.SortCriteria, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-check form-row col-md-5">
+                @Html.LabelFor(model => model.Filter.SortAscending, "Ascending", new { @class = "form-check-label" })
+                @Html.CheckBoxFor(model => model.Filter.SortAscending, new { htmlAttributes = new { @class = "form-check-input" } })
+                @Html.ValidationMessageFor(model => model.Filter.SortAscending, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="row btn-toolbar justify-content-around" role="toolbar" style="margin-bottom:5px">
+                <div class="btn-group">
+                    <input type="button" class="btn btn-danger" value="Clear" onclick="resetRange();location.href = '@Url.Action("ClearFilter", "Company")'" />
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-success" id="btnSubmit" type="submit" onclick="saveRange()">Filter </button>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+<div class="row w-100 p-3">
+    <div class="col-lg-12">
+        <div class="list-group text-center">
+            @{foreach (var company in Model.Companies)
+                {
+                    <div class="list-group-item list-group-item-action clickable-area" style="height: 120px;" @("onclick=GoToDetail('" + company.Id + "')")>
+                        <div class="d-flex w-100 justify-content-between ">
+                            <h3 class="mb-3" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="thumbnail-label">@company.Name</h3>
+                            
+                        </div>
+
+                        @if (company.Location != null)
+                        {
+                            <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; text-overflow: ellipsis; white-space: normal;">
+                                Location: @company.Location                               
+                            </p>
+                        }                                            
+                    </div>
+                }}
+        </div>
+    </div>
+</div>
+<div class="row justify-content-center">
+    @Html.PagedListPager(Model.Companies, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+    {
+        LiElementClasses = new string[] { "page-item" },
+        PageClasses = new string[] { "page-link" }
+    })
+</div>
+
+<script>
+    function GoToDetail(id) {
+        window.location = "/Company/Details/" + id;
+    }
+</script>
+
+@section scripts{
+    @Scripts.Render("~/Scripts/jquery-ui-1.12.1.js")
+    @Scripts.Render("~/Scripts/slider.js")
+}
