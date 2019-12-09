@@ -14,11 +14,11 @@ namespace BusinessLayer.QueryObjects
         public JobseekerQueryObject(IMapper mapper, IQuery<Jobseeker> query) : base(mapper, query) { }
         protected override IQuery<Jobseeker> ApplyWhereClause(IQuery<Jobseeker> query, JobseekerFilterDTO filter)
         {
-            if (filter.Email.Equals(null) && filter.HighestEducation.Equals(null))
+            if (filter.Email == null && filter.HighestEducation == null)
                 return query;
-            else if (!filter.Email.Equals(null))
+            else if (filter.Email != null)
                 return query.Where(new SimplePredicate(nameof(Jobseeker.Email), ValueComparingOperator.Equal, filter.Email));
-            else if (!filter.HighestEducation.Equals(null))
+            else if (filter.HighestEducation != null)
                 return query.Where(new SimplePredicate(nameof(Jobseeker.HighestEducation), ValueComparingOperator.Equal, filter.HighestEducation));
             return query;
         }

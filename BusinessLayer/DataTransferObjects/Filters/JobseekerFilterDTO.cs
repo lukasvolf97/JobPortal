@@ -11,7 +11,7 @@ namespace BusinessLayer.DataTransferObjects.Filters
     public class JobseekerFilterDTO : FilterDtoBase
     {
 
-        public EducationType HighestEducation { get; set; }
+        public EducationType? HighestEducation { get; set; }
 
         public string Email { get; set; }
 

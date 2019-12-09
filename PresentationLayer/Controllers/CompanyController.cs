@@ -3,19 +3,15 @@ using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.Facades;
 using PresentationLayer.Models;
-using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using X.PagedList;
 
 namespace PresentationLayer.Controllers
 {
+    [Authorize(Roles = "Company")]
     public class CompanyController : Controller
     {
-        public const int PageSize = 9;
-
-        private const string FilterSessionKey = "filter";
-
         private CompanyFacade companyFacade;
 
         public CompanyController(CompanyFacade companyFacade)
@@ -23,48 +19,23 @@ namespace PresentationLayer.Controllers
             this.companyFacade = companyFacade;
         }
 
-        public async Task<ActionResult> Index(int page = 1)
+        public async Task<ActionResult> Index()
         {
-            var filter = Session[FilterSessionKey] as CompanyFilterDTO ?? new CompanyFilterDTO { PageSize = PageSize };
-            filter.RequestedPageNumber = page;
-
-            var allJobOffers = await companyFacade.ListAllCompanies();
-            var result = await companyFacade.ListAllCompanies();
-
-            var model = InitializeProductListViewModel(result, (int)allJobOffers.TotalItemsCount);
-            return View("CompanyListView", model);
+            var userCompany = await companyFacade.GetUserAccordingToUsernameAsync(User.Identity.Name.Split('@')[0]);
+            var company = await companyFacade.GetCompanyById(userCompany.Id);
+            var model = InitializeModel(company);
+            return View("CompanyProfileView",model);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Index(CompanyListViewModel model)
+        private CompanyProfileModel InitializeModel(CompanyDTO company)
         {
-            model.Filter.PageSize = PageSize;
-            Session[FilterSessionKey] = model.Filter;
-
-            var allJobOffers = await companyFacade.ListAllCompanies();
-            var result = await companyFacade.ListAllCompanies();
-            var newModel = InitializeProductListViewModel(result, (int)allJobOffers.TotalItemsCount);
-            return View("CompanyListView", newModel);
-        }
-
-        private CompanyListViewModel InitializeProductListViewModel(QueryResultDto<CompanyDTO, CompanyFilterDTO> result, int totalItemsCount)
-        {
-            return new CompanyListViewModel
+            return new CompanyProfileModel
             {
-                Companies = new StaticPagedList<CompanyDTO>(result.Items, result.RequestedPageNumber ?? 1, PageSize, totalItemsCount),
-                Filter = result.Filter
+                Name = company.Name,
+                Description = company.Description,
+                PhoneNumber = company.PhoneNumber,
+                Location = company.Location
             };
-        }
-        public ActionResult ClearFilter()
-        {
-            Session[FilterSessionKey] = null;
-            return RedirectToAction(nameof(Index));
-        }
-
-        public async Task<ActionResult> Details(Guid id)
-        {
-            var model = await companyFacade.GetCompanyById(id);
-            return View("CompanyDetailView", model);
         }
     }
 }
