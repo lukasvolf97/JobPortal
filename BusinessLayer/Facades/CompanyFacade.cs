@@ -24,6 +24,14 @@ namespace BusinessLayer.Facades
             this.userService = userService;
         }
 
+        public async Task<CompanyDTO> GetCompanyById(Guid id)
+        {
+            using (UnitOfWorkProvider.Create())
+            {
+                return await companyService.GetAsync(id);
+            }
+        }
+
         public async Task<QueryResultDto<CompanyDTO, CompanyFilterDTO>> ListAllCompanies()
         {
             using (UnitOfWorkProvider.Create())

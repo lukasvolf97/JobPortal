@@ -15,5 +15,7 @@ namespace BusinessLayer.DataTransferObjects
         [Required(ErrorMessage = "Password is required!")]
         [StringLength(30, MinimumLength = 6, ErrorMessage = "Password length must be between 6 and 30")]
         public string Password { get; set; }
+
+        public string Roles { get; set; }
     }
 }

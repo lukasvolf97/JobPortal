@@ -31,7 +31,17 @@
                         <li class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" id="dropdownMenuLink" data-toggle="dropdown"><span class="fa fa-user"></span> @User.Identity.Name.Split('@')[0] <b class="caret grey"></b></a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                <div class="dropdown-header">Account management</div>
+                                <div class="dropdown-header">Account</div>
+                                @if (User.IsInRole("Company"))
+                                {
+                                    <div class="dropdown-divider"></div>
+                                    @Html.ActionLink("Profile", "Index", "Company", null, new { @class = "dropdown-item" })
+                                }
+                                else
+                                {
+                                    <div class="dropdown-divider"></div>
+                                    @Html.ActionLink("Profile", "Index", "Jobseeker", null, new { @class = "dropdown-item" })
+                                }
                                 <div class="dropdown-divider"></div>
                                 @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "dropdown-item" })
                             </div>

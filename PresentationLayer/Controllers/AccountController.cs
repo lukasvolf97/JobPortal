@@ -42,6 +42,8 @@ namespace PresentationLayer.Controllers
         {
             try
             {
+                userRegistrationDTO.Roles += "Jobseeker";
+
                 await JobseekerFacade.RegisterJobSeeker(userRegistrationDTO);
 
                 var authTicket = new FormsAuthenticationTicket(1, userRegistrationDTO.Username, DateTime.Now,
@@ -65,6 +67,8 @@ namespace PresentationLayer.Controllers
         {
             try
             {
+                userRegistrationDTO.Roles += "Company";
+
                 await CompanyFacade.RegisterCompany(userRegistrationDTO);
 
                 var authTicket = new FormsAuthenticationTicket(1, userRegistrationDTO.Username, DateTime.Now,
