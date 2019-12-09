@@ -7,8 +7,8 @@
     <ProjectGuid>{C431862D-ABC8-4D5B-BF2F-6B9305C45425}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DemoEshop.DataAccessLayer.EntityFramework</RootNamespace>
-    <AssemblyName>DemoEshop.DataAccessLayer.EntityFramework</AssemblyName>
+    <RootNamespace>DataAccessLayer</RootNamespace>
+    <AssemblyName>DataAccessLayer</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -64,9 +64,9 @@
     <Compile Include="Enums\ApplicationStatus.cs" />
     <Compile Include="Enums\EducationType.cs" />
     <Compile Include="JobPortalDbContext.cs" />
-    <Compile Include="Migrations\201912082342110_initial.cs" />
-    <Compile Include="Migrations\201912082342110_initial.Designer.cs">
-      <DependentUpon>201912082342110_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201912090056186_initial_create.cs" />
+    <Compile Include="Migrations\201912090056186_initial_create.Designer.cs">
+      <DependentUpon>201912090056186_initial_create.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,8 +86,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201912082342110_initial.resx">
-      <DependentUpon>201912082342110_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912090056186_initial_create.resx">
+      <DependentUpon>201912090056186_initial_create.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

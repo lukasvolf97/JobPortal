@@ -7,8 +7,8 @@
     <ProjectGuid>{636F486E-19F9-4C48-B80C-F676C1DA6BF9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DemoEshop.BusinessLayer</RootNamespace>
-    <AssemblyName>DemoEshop.BusinessLayer</AssemblyName>
+    <RootNamespace>BusinessLayer</RootNamespace>
+    <AssemblyName>BusinessLayer</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>

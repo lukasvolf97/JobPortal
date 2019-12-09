@@ -16,36 +16,52 @@ namespace PresentationLayer.Controllers
         public JobseekerFacade JobseekerFacade { get; set; }
         public CompanyFacade CompanyFacade { get; set; }
 
+        public AccountController(JobseekerFacade JobseekerFacade, CompanyFacade CompanyFacade)
+        {
+            this.JobseekerFacade = JobseekerFacade;
+            this.CompanyFacade = CompanyFacade;
+        }
+
         public ActionResult Register()
         {
             return View();
         }
 
+                public ActionResult RegisterJobseeker()
+                {
+                    return View("RegisterJobseeker");
+                }
+
+                public ActionResult RegisterCompany()
+                {
+                    return View("RegisterCompany");
+                }
+
+                [HttpPost]
+                public async Task<ActionResult> RegisterJobseeker(JobseekerRegistrationDTO userRegistrationDTO)
+                {
+                    try
+                    {
+                        await JobseekerFacade.RegisterJobSeeker(userRegistrationDTO);
+
+                        var authTicket = new FormsAuthenticationTicket(1, userRegistrationDTO.Email, DateTime.Now,
+                            DateTime.Now.AddMinutes(30), false, "");
+                        string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+                        var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                        HttpContext.Response.Cookies.Add(authCookie);
+
+                        return RedirectToAction("Index", "Home");
+                    }
+                    catch (ArgumentException)
+                    {
+                        ModelState.AddModelError("Username", "Account with that username already exists!");
+                        return View();
+                    }
+                }
+                
+        
         [HttpPost]
-        public async Task<ActionResult> RegisterJobseeker(JobseekerRegistrationDTO userRegistrationDTO)
-        {
-            try
-            {
-                await JobseekerFacade.RegisterJobSeeker(userRegistrationDTO);
-
-                var authTicket = new FormsAuthenticationTicket(1, userRegistrationDTO.Email, DateTime.Now,
-                    DateTime.Now.AddMinutes(30), false, "");
-                string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-                var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
-                HttpContext.Response.Cookies.Add(authCookie);
-
-                return RedirectToAction("Index", "Home");
-            }
-            catch (ArgumentException)
-            {
-                ModelState.AddModelError("Username", "Account with that username already exists!");
-                return View();
-            }
-        }
-
-
-        [HttpPost]
-        public async Task<ActionResult> RegisterJobseeker(CompanyRegistrationDTO userRegistrationDTO)
+        public async Task<ActionResult> RegisterCompany(CompanyRegistrationDTO userRegistrationDTO)
         {
             try
             {

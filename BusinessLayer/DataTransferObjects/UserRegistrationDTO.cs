@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLayer.DataTransferObjects
 {
-    public class UserRegistrationDTO : DtoBase
+    public abstract class UserRegistrationDTO : DtoBase
     {
         [Required(ErrorMessage = "Email is required!")]
         [EmailAddress(ErrorMessage = "This is not valid email address!")]
