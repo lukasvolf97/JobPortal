@@ -28,6 +28,7 @@ namespace BusinessLayer.Config
             config.CreateMap<QueryResult<Jobseeker>, QueryResultDto<JobseekerDTO, JobseekerFilterDTO>>();
             config.CreateMap<QueryResult<Company>, QueryResultDto<CompanyDTO, CompanyFilterDTO>>();
             config.CreateMap<QueryResult<JobApplication>, QueryResultDto<JobApplicationDTO, JobApplicationFilterDTO>>();
+            config.CreateMap<QueryResult<User>, QueryResultDto<UserDTO, UserFilterDTO>>();
         }
 
     }

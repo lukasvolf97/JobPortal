@@ -40,9 +40,10 @@ namespace PresentationLayer
         protected void Application_PostAuthenticateRequest(Object sender, EventArgs e)
         {
             var authCookie = HttpContext.Current.Request.Cookies[FormsAuthentication.FormsCookieName];
-            if (authCookie != null)
+            if (authCookie != null && !string.IsNullOrEmpty(authCookie.Value))
             {
                 FormsAuthenticationTicket authTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                
                 if (authTicket != null && !authTicket.Expired)
                 {
                     var roles = authTicket.UserData.Split(',');
