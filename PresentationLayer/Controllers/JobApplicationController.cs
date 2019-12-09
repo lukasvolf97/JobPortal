@@ -2,6 +2,7 @@
 using BusinessLayer.DataTransferObjects.Common;
 using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.Facades;
+using DataAccessLayer.Enums;
 using PresentationLayer.Models;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace PresentationLayer.Controllers
             var allJobOffers = await jobApplicationFacade.GetJobApplicationsAsync(new JobApplicationFilterDTO());
             var result = await jobApplicationFacade.GetJobApplicationsAsync(model.Filter);
             var newModel = InitializeProductListViewModel(result, (int)allJobOffers.TotalItemsCount);
-            return View("JobOfferListView", newModel);
+            return View("JobApplicationListView", newModel);
         }
 
         private JobApplicationListViewModel InitializeProductListViewModel(QueryResultDto<JobApplicationDTO, JobApplicationFilterDTO> result, int totalItemsCount)
@@ -68,6 +69,13 @@ namespace PresentationLayer.Controllers
         {
             var model = await jobApplicationFacade.GetJobApplicationById(id);
             return View("JobOfferDetailView", model);
+        }
+
+        public async Task<ActionResult> ChangeStatus(JobApplicationDTO jobApplication, bool accepted)
+        {         
+            jobApplication.ApplicationStatus = accepted ? ApplicationStatus.Accepted : ApplicationStatus.Declined;
+            await jobApplicationFacade.UpdateJobApplication(jobApplication);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

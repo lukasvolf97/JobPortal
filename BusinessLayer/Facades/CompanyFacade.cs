@@ -40,14 +40,6 @@ namespace BusinessLayer.Facades
             }
         }
 
-        public async Task<CompanyDTO> GetCompanyById(Guid id)
-        {
-            using (UnitOfWorkProvider.Create())
-            {
-                return await companyService.GetAsync(id);
-            }
-        }
-
         public async Task UpdateCompany(CompanyDTO company)
         {
             using (var uow = UnitOfWorkProvider.Create())
