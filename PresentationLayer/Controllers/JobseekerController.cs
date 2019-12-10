@@ -43,7 +43,8 @@ namespace PresentationLayer.Controllers
                 MobilePhoneNumber = jobseeker.MobilePhoneNumber,
                 Username = userJobseeker.Username,
                 PasswordHash = userJobseeker.PasswordHash,
-                PasswordSalt = userJobseeker.PasswordSalt
+                PasswordSalt = userJobseeker.PasswordSalt,
+                Roles = userJobseeker.Roles
             };
             await jobseekerFacade.UpdateJobOffer(jobseekerTmp);
             var model = InitializeModel(await jobseekerFacade.GetJobseekerById(userJobseeker.Id));
