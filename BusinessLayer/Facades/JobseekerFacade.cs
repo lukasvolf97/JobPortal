@@ -49,8 +49,6 @@ namespace BusinessLayer.Facades
             }
         }
 
-
-
         public async Task UpdateJobOffer(JobseekerDTO jobseeker)
         {
             using (var uow = UnitOfWorkProvider.Create())

@@ -34,13 +34,12 @@ namespace BusinessLayer.Services.Jobseekers
 
         public async Task<JobseekerDTO> GetJobseekerAccordingToId(Guid jobseekerId)
         {
-            var queryResult = await Query.ExecuteQuery(new JobseekerFilterDTO { Id = jobseekerId });
-            return queryResult.Items.SingleOrDefault();
+            return await GetAsync(jobseekerId, true);
         }
 
         protected override async Task<Jobseeker> GetWithIncludesAsync(Guid entityId)
         {
-            return await Repository.GetAsync(entityId, /*nameof(Jobseeker.JobApplications),*/ nameof(Jobseeker.HighestEducation));
+            return await Repository.GetAsync(entityId, nameof(Jobseeker.JobApplications));
         }
     }
 }

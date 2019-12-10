@@ -15,6 +15,7 @@ namespace WebApi.Controllers
         public JobOfferFacade JobOfferFacade { get; set; }
 
         [HttpGet]
+        [Route("api/getall")]
         public async Task<IEnumerable<JobOfferDTO>> ListAllJobOffers()
         {
             var jobOffers = (await JobOfferFacade.ListAllJobOffers()).Items;

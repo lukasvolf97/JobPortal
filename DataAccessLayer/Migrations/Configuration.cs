@@ -92,6 +92,7 @@ namespace DataAccessLayer.Migrations
                 ApplicationStatus = Enums.ApplicationStatus.Undecided
             };
 
+
             var JobApplication2 = new JobApplication
             {
                 Id = Guid.Parse("aa05dc84-5c27-40ce-a916-175165b9b91f"),
@@ -99,6 +100,15 @@ namespace DataAccessLayer.Migrations
                 //Company = Comp1,
                 //Jobseeker = User3,
                 ApplicationStatus = Enums.ApplicationStatus.Declined
+            };
+
+            var JobApplication3 = new JobApplication
+            {
+                Id = Guid.Parse("ab05dc64-5c27-40ce-a916-175165b9b91f"),
+                JobOffer = Job1,
+                //Company = Comp1,
+                //Jobseeker = User2,
+                ApplicationStatus = Enums.ApplicationStatus.Undecided
             };
 
 

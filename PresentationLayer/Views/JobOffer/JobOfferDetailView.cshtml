@@ -1,15 +1,11 @@
-﻿@model BusinessLayer.DataTransferObjects.JobOfferDTO
+﻿@model PresentationLayer.Models.JobOfferDetailsModel
 
 
 @{
-    ViewBag.Title = "JobOfferDetailView";
+    ViewBag.Title = "Job Offer";
 }
 
-<h2>JobOfferDetailView</h2>
-
-<h4>Id</h4>
-<p>@Model.Id</p>
-
+<h2>Job Offer</h2>
 
 <h4>Name</h4>
 <p>@Model.Name</p>
@@ -32,9 +28,21 @@
 
 <br />
 <h4>Salary</h4>
-<p>@Model.Salary</p>
+<p> @Model.Salary</p>
 
-<div class="btn-group">
-    <button class="btn btn-success" id="btnSubmit" type="submit" onclick="@*TODO*@">Apply</button>
-</div>
+
+@using (Html.BeginForm("Apply", "JobApplication", new { jobOfferId = Model.Id }))
+{
+<div>
+    @Html.HiddenFor(x => Model.Id)
+    @Html.HiddenFor(x => Model.Description)
+    @Html.HiddenFor(x => Model.Company)
+    @Html.HiddenFor(x => Model.Name)
+    @Html.HiddenFor(x => Model.Location)
+    @Html.HiddenFor(x => Model.Salary)
+    <div class="btn-group">
+        <input type="submit" class="btn btn-success" id="btnSubmit" value="Apply" />
+    </div>
+    </div>
+    }
 

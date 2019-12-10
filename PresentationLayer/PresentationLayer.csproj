@@ -178,6 +178,7 @@
     <Compile Include="Models\CompanyListViewModel.cs" />
     <Compile Include="Models\CompanyProfileModel.cs" />
     <Compile Include="Models\JobApplicationListViewModel.cs" />
+    <Compile Include="Models\JobOfferDetailsModel.cs" />
     <Compile Include="Models\JobOfferListViewModel.cs" />
     <Compile Include="Models\JobseekerProfileModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
@@ -340,6 +341,7 @@
     <Content Include="Views\JobApplication\JobApplicationListView.cshtml" />
     <Content Include="Views\Jobseeker\JobseekerProfileView.cshtml" />
     <Content Include="Views\Company\CompanyProfileView.cshtml" />
+    <Content Include="Views\JobApplication\_JobApplicationListJobseeker.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

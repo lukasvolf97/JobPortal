@@ -36,7 +36,8 @@ namespace PresentationLayer.Controllers
                 FirstName = jobseeker.FirstName,
                 LastName = jobseeker.LastName, 
                 MobilePhoneNumber = jobseeker.MobilePhoneNumber,
-                Address = jobseeker.Address
+                Address = jobseeker.Address,
+                JobApplications = jobseeker.JobApplications
             };
         }
     }

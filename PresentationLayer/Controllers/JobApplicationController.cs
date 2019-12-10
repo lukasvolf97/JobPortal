@@ -21,10 +21,14 @@ namespace PresentationLayer.Controllers
         private const string FilterSessionKey = "filter";
 
         private JobApplicationFacade jobApplicationFacade;
+        private JobOfferFacade jobOfferFacade;
+        private JobseekerFacade jobseekerFacade;
 
-        public JobApplicationController(JobApplicationFacade jobApplicationFacade)
+        public JobApplicationController(JobApplicationFacade jobApplicationFacade, JobOfferFacade jobOfferFacade, JobseekerFacade jobseekerFacade)
         {
             this.jobApplicationFacade = jobApplicationFacade;
+            this.jobOfferFacade = jobOfferFacade;
+            this.jobseekerFacade = jobseekerFacade;
         }
 
         public async Task<ActionResult> Index(int page = 1)
@@ -76,6 +80,32 @@ namespace PresentationLayer.Controllers
             jobApplication.ApplicationStatus = accepted ? ApplicationStatus.Accepted : ApplicationStatus.Declined;
             await jobApplicationFacade.UpdateJobApplication(jobApplication);
             return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<ActionResult> Cancel( Guid jobApplicationId)
+        {
+            await jobApplicationFacade.DeleteJobApplication(jobApplicationId);
+            return View("_JobApplicationListJobseeker");
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Apply(Guid jobOfferId)
+        {
+            var jobOffer = await jobOfferFacade.GetJobOfferById(jobOfferId);
+            var user = await jobseekerFacade.GetUserAccordingToUsernameAsync(User.Identity.Name);
+            var jobseeker = await jobseekerFacade.GetJobseekerById(user.Id);
+            await jobApplicationFacade.CreateJobApplication(
+                new JobApplicationDTO
+                {
+                    ApplicationStatus = ApplicationStatus.Undecided,
+                    JobOfferId = jobOffer.Id,
+                    JobOffer = jobOffer,
+                    CompanyId = jobOffer.Company.Id,
+                    Company = jobOffer.Company,
+                    Jobseeker = jobseeker,
+                    JobseekerId = jobseeker.Id
+                });
+            return RedirectToAction("Index", "JobOffer");
         }
     }
 }

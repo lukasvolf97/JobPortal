@@ -4,6 +4,7 @@ using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.Facades;
 using PresentationLayer.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using X.PagedList;
@@ -31,7 +32,7 @@ namespace PresentationLayer.Controllers
             var allJobOffers = await jobOfferFacade.GetJobOffersAsync(new JobOfferFilterDTO());
 
             var result = await jobOfferFacade.GetJobOffersAsync(filter);
-            var model = InitializeProductListViewModel(result, (int)allJobOffers.TotalItemsCount);
+            var model = InitializeJobOfferListViewModel(result, (int)allJobOffers.TotalItemsCount);
             return View("JobOfferListView", model);
         }
 
@@ -43,11 +44,11 @@ namespace PresentationLayer.Controllers
             
             var allJobOffers = await jobOfferFacade.GetJobOffersAsync(new JobOfferFilterDTO());
             var result = await jobOfferFacade.GetJobOffersAsync(model.Filter);
-            var newModel = InitializeProductListViewModel(result, (int)allJobOffers.TotalItemsCount);
+            var newModel = InitializeJobOfferListViewModel(result, (int)allJobOffers.TotalItemsCount);
             return View("JobOfferListView", newModel);
         }
 
-        private JobOfferListViewModel InitializeProductListViewModel(QueryResultDto<JobOfferDTO, JobOfferFilterDTO> result, int totalItemsCount)
+        private JobOfferListViewModel InitializeJobOfferListViewModel(QueryResultDto<JobOfferDTO, JobOfferFilterDTO> result, int totalItemsCount)
         {
             return new JobOfferListViewModel
             {
@@ -55,6 +56,7 @@ namespace PresentationLayer.Controllers
                 Filter = result.Filter
             };
         }
+
         public ActionResult ClearFilter()
         {
             Session[FilterSessionKey] = null;
@@ -63,8 +65,23 @@ namespace PresentationLayer.Controllers
 
         public async Task<ActionResult> Details(Guid id)
         {
-            var model = await jobOfferFacade.GetJobOfferById(id);
+            var model = InitializeJobOfferDetailsModel(await jobOfferFacade.GetJobOfferById(id));
             return View("JobOfferDetailView", model);
+        }
+
+        private JobOfferDetailsModel InitializeJobOfferDetailsModel(JobOfferDTO joboffer)
+        {
+            return new JobOfferDetailsModel
+            {
+                Id = joboffer.Id,
+                Name = joboffer.Name,
+                Description = joboffer.Description,
+                EntryQuestions = joboffer.EntryQuestions,
+                Location = joboffer.Location,
+                Company = joboffer.Company,
+                Date = joboffer.Date,
+                Salary = joboffer.Salary
+            };
         }
     }
 }
