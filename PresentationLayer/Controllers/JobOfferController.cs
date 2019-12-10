@@ -18,10 +18,11 @@ namespace PresentationLayer.Controllers
         private const string FilterSessionKey = "filter";
 
         private JobOfferFacade jobOfferFacade;
-
-        public JobOfferController(JobOfferFacade jobOfferFacade)
+        private CompanyFacade companyFacade;
+        public JobOfferController(JobOfferFacade jobOfferFacade, CompanyFacade companyFacade)
         {
             this.jobOfferFacade = jobOfferFacade;
+            this.companyFacade = companyFacade;
         }
 
         public async Task<ActionResult> Index(int page = 1)
@@ -81,6 +82,57 @@ namespace PresentationLayer.Controllers
                 Company = joboffer.Company,
                 Date = joboffer.Date,
                 Salary = joboffer.Salary
+            };
+        }
+
+        public async Task<ActionResult> CustomJobOffer(int page = 1)
+        {
+            JobOfferFilterDTO filter;
+            if (User.IsInRole("Admin"))
+                filter = Session[FilterSessionKey] as JobOfferFilterDTO ?? new JobOfferFilterDTO { PageSize = PageSize };
+            else
+            {
+                var user = await companyFacade.GetUserAccordingToUsernameAsync(User.Identity.Name);
+                filter = new JobOfferFilterDTO { CompanyId = user.Id, PageSize = PageSize };
+            }
+
+            filter.RequestedPageNumber = page;
+
+            var allJobOffers = await jobOfferFacade.GetJobOffersAsync(new JobOfferFilterDTO());
+
+            var result = await jobOfferFacade.GetJobOffersAsync(filter);
+            var model = InitializeCustomJobOfferViewModel(result, (int)allJobOffers.TotalItemsCount);
+            return View("JobOfferCustomView", model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CustomJobOffer(CustomJobOfferModel model)
+        {
+            model.Filter.PageSize = PageSize;
+            Session[FilterSessionKey] = model.Filter;
+
+            var allJobOffers = await jobOfferFacade.GetJobOffersAsync(new JobOfferFilterDTO());
+            var result = await jobOfferFacade.GetJobOffersAsync(model.Filter);
+            var newModel = InitializeCustomJobOfferViewModel(result, (int)allJobOffers.TotalItemsCount);
+            return View("JobOfferCustomView", newModel);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Create(CustomJobOfferModel jobOfferModel)
+        {
+            var user = await companyFacade.GetUserAccordingToUsernameAsync(User.Identity.Name);
+            var jobOfferDTO = jobOfferModel.NewJobOffer;
+            jobOfferDTO.Company =   await companyFacade.GetCompanyById(user.Id);
+            await jobOfferFacade.CreateJobOffer(jobOfferDTO);
+            return RedirectToAction("Index", "JobOffer");
+        }
+
+        private CustomJobOfferModel InitializeCustomJobOfferViewModel(QueryResultDto<JobOfferDTO, JobOfferFilterDTO> result, int totalItemsCount)
+        {
+            return new CustomJobOfferModel
+            {
+                JobOffers = new StaticPagedList<JobOfferDTO>(result.Items, result.RequestedPageNumber ?? 1, PageSize, totalItemsCount),
+                Filter = result.Filter
             };
         }
     }

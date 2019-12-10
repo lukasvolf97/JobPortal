@@ -16,7 +16,7 @@ namespace BusinessLayer.DataTransferObjects
 
         public CompanyDTO Company { get; set; }
 
-        public DateTime Date { get; set; }
+        public DateTime Date { get; set; } = DateTime.Now;
 
         public int Salary { get; set; }
 

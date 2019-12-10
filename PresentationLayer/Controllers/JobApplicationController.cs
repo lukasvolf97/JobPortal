@@ -23,17 +23,27 @@ namespace PresentationLayer.Controllers
         private JobApplicationFacade jobApplicationFacade;
         private JobOfferFacade jobOfferFacade;
         private JobseekerFacade jobseekerFacade;
+        private CompanyFacade companyFacade;
 
-        public JobApplicationController(JobApplicationFacade jobApplicationFacade, JobOfferFacade jobOfferFacade, JobseekerFacade jobseekerFacade)
+        public JobApplicationController(JobApplicationFacade jobApplicationFacade, JobOfferFacade jobOfferFacade, JobseekerFacade jobseekerFacade, CompanyFacade companyFacade)
         {
             this.jobApplicationFacade = jobApplicationFacade;
             this.jobOfferFacade = jobOfferFacade;
             this.jobseekerFacade = jobseekerFacade;
+            this.companyFacade = companyFacade;
         }
 
         public async Task<ActionResult> Index(int page = 1)
         {
-            var filter = Session[FilterSessionKey] as JobApplicationFilterDTO ?? new JobApplicationFilterDTO { PageSize = PageSize };
+            JobApplicationFilterDTO filter;
+            if (User.IsInRole("Admin"))
+                filter = Session[FilterSessionKey] as JobApplicationFilterDTO ?? new JobApplicationFilterDTO { PageSize = PageSize };
+            else
+            {
+                var user = await companyFacade.GetUserAccordingToUsernameAsync(User.Identity.Name);
+                filter = Session[FilterSessionKey] as JobApplicationFilterDTO ?? new JobApplicationFilterDTO { CompanyId = user.Id, PageSize = PageSize };
+            }
+
             filter.RequestedPageNumber = page;
 
             var allJobApplications = await jobApplicationFacade.GetJobApplicationsAsync(new JobApplicationFilterDTO());

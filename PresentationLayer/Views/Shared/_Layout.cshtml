@@ -21,9 +21,11 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Job offers", "Index", "JobOffer", null, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Job applications", "Index", "JobApplication", null, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Companies", "Index", "Company", null, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Admin JobOffer edit", "Index", "AdminJobOfferEdit", null, new { @class = "nav-link" })</li>
+                    @if (User.IsInRole("Company") || User.IsInRole("Admin"))
+                    {
+                        <li>@Html.ActionLink("Job Applications", "Index", "JobApplication", null, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Your Job Offers", "CustomJobOffer", "JobOffer", null, new { @class = "nav-link" })</li>
+                    }
                 </ul>
                 <ul class="navbar-nav">
                     @if (Request.IsAuthenticated)

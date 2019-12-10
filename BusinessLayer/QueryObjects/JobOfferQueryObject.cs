@@ -20,6 +20,7 @@ namespace BusinessLayer.QueryObjects.Common
             var definedPredicates = new List<IPredicate>();
             AddIfDefined(FilterByName(filter), definedPredicates);
             AddIfDefined(FilterBySalary(filter), definedPredicates);
+            AddIfDefined(FilterById(filter), definedPredicates);
             if (definedPredicates.Count == 0)
             {
                 return query;
@@ -38,6 +39,16 @@ namespace BusinessLayer.QueryObjects.Common
             {
                 definedPredicates.Add(predicate);
             }
+        }
+
+        private static SimplePredicate FilterById(JobOfferFilterDTO filter)
+        {
+            if (filter.CompanyId == null)
+            {
+                return null;
+            }
+            return new SimplePredicate(nameof(JobOffer.CompanyId), ValueComparingOperator.StringContains,
+                filter.CompanyId);
         }
 
         private static SimplePredicate FilterByName(JobOfferFilterDTO filter)
