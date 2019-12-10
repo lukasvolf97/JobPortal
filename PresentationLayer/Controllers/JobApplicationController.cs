@@ -75,8 +75,9 @@ namespace PresentationLayer.Controllers
             return View("JobOfferDetailView", model);
         }
 
-        public async Task<ActionResult> ChangeStatus(JobApplicationDTO jobApplication, bool accepted)
-        {         
+        public async Task<ActionResult> ChangeStatus(Guid id, bool accepted)
+        {
+            var jobApplication = await jobApplicationFacade.GetJobApplicationById(id);
             jobApplication.ApplicationStatus = accepted ? ApplicationStatus.Accepted : ApplicationStatus.Declined;
             await jobApplicationFacade.UpdateJobApplication(jobApplication);
             return RedirectToAction(nameof(Index));
