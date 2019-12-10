@@ -68,10 +68,14 @@
                                 </p>
                             </div>
 
+                            @{ if (jobApplication.ApplicationStatus == DataAccessLayer.Enums.ApplicationStatus.Undecided)
+                                {
                             <div class="btn-group d-flex w-100 align-content-end">
-                                <button class="btn btn-success" id="btnSubmit" type="submit" onclick="location.href = '@Url.Action("ChangeStatus", "JobApplication", new { jobApplication = @jobApplication, accepted = true})'">Accept</button>
-                                <button class="btn btn-danger" id="btnSubmit" type="submit"  onclick="location.href = '@Url.Action("ChangeStatus", "JobApplication", new { jobApplication = @jobApplication, accepted = false})'">Reject</button>
+                                <button class="btn btn-success" id="btnSubmit" type="submit" onclick="location.href = '@Url.Action("ChangeStatus", "JobApplication", new { id = jobApplication.Id, accepted = true })'">Accept</button>
+                                <button class="btn btn-danger" id="btnSubmit" type="submit"  onclick="location.href = '@Url.Action("ChangeStatus", "JobApplication", new { id = jobApplication.Id, accepted = false })'">Reject</button>
                             </div>
+                                    }
+                                }
                         </div>
                 }}
         </div>
