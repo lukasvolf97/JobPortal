@@ -13,8 +13,8 @@ namespace DataAccessLayer.Config
 {
     public class EntityFrameworkInstaller : IWindsorInstaller
     {
-        internal const string ConnectionString = "Data source=(localdb)\\MSSQLLocalDB;Database=JobPortalSample;Trusted_Connection=True;MultipleActiveResultSets=true";
-        //internal const string ConnectionString = "Data source=jobportal-pv179.database.windows.net;Initial Catalog=JobPortalSample; User ID= jobportalAdmin; Password=Pv179JobPortal";
+        //internal const string ConnectionString = "Data source=(localdb)\\MSSQLLocalDB;Database=JobPortalSample;Trusted_Connection=True;MultipleActiveResultSets=true";
+        internal const string ConnectionString = "Data source=jobportal-pv179.database.windows.net;Initial Catalog=JobPortalSample; User ID= jobportalAdmin; Password=Pv179JobPortal";
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {
             container.Register(

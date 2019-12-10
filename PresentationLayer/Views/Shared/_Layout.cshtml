@@ -21,11 +21,14 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Job offers", "Index", "JobOffer", null, new { @class = "nav-link" })</li>
-                    @if (User.IsInRole("Company") || User.IsInRole("Admin"))
+                    @if (User.IsInRole("Company") || User.IsInRole("Admin") || User.IsInRole("Jobseeker"))
                     {
                         <li>@Html.ActionLink("Job Applications", "Index", "JobApplication", null, new { @class = "nav-link" })</li>
+                        if (User.IsInRole("Company") || User.IsInRole("Admin"))
+                        {
                         <li>@Html.ActionLink("Your Job Offers", "CustomJobOffer", "JobOffer", null, new { @class = "nav-link" })</li>
-                    }
+                        }
+                     }
                 </ul>
                 <ul class="navbar-nav">
                     @if (Request.IsAuthenticated)
