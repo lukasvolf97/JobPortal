@@ -2,6 +2,7 @@
 using BusinessLayer.DataTransferObjects.Filters;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -19,6 +20,7 @@ namespace PresentationLayer.Models
 
         public SelectList AllSortCriteria => new SelectList(JobOfferSortCriteria);
 
+        [Required]
         public JobOfferDTO NewJobOffer { get; set; }
     }
 }

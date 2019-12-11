@@ -96,7 +96,7 @@ namespace PresentationLayer.Controllers
         public async Task<ActionResult> Cancel( Guid jobApplicationId)
         {
             await jobApplicationFacade.DeleteJobApplication(jobApplicationId);
-            return View("_JobApplicationListJobseeker");
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
@@ -110,10 +110,10 @@ namespace PresentationLayer.Controllers
                 {
                     ApplicationStatus = ApplicationStatus.Undecided,
                     JobOfferId = jobOffer.Id,
-                    JobOffer = jobOffer,
+                    JobOffer = null,
                     CompanyId = jobOffer.Company.Id,
-                    Company = jobOffer.Company,
-                    Jobseeker = jobseeker,
+                    Company = null,
+                    Jobseeker = null,
                     JobseekerId = jobseeker.Id
                 });
             return RedirectToAction("Index", "JobOffer");

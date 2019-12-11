@@ -64,32 +64,43 @@
         <div class="list-group text-center">
             @{foreach (var jobOffer in Model.JobOffers)
                 {
-                    <div class="list-group-item list-group-item-action clickable-area" style="height: 120px;" @("onclick=GoToDetail('" + jobOffer.Id + "')")>
-                        <div class="d-flex w-100 justify-content-between ">
-                            <h3 class="mb-3" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="thumbnail-label">@jobOffer.Name</h3>
-                            <small>@jobOffer.Date.Humanize()</small>
-                        </div>
+                        <div class="list-group-item list-group-item-action clickable-area" style="height: 130px; margin-bottom: 15px" @("onclick=GoToDetail('" + jobOffer.Id + "')")>
+                            
+                            <div class="d-flex w-100">
+                                <div class="p-0 m-0">
+                                    <h3 style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="thumbnail-label">@jobOffer.Name</h3>
+                                </div>
+                                <div class="p-0 ml-auto">
+                                    <small>@jobOffer.Date.Humanize()</small>
+                                </div>
+                            </div>
 
-
-                        @if (jobOffer.Company.Location != null)
-                        {
-                            <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; text-overflow: ellipsis; white-space: normal;">
-                                @jobOffer.Company.Name (Location: @jobOffer.Company.Location, Phone Number: @jobOffer.Company.PhoneNumber)
-                            </p>
-                        }
-                        else
-                        {
-                            <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; text-overflow: ellipsis; white-space: normal;">
-                                @jobOffer.Company.Name (Phone Number: @jobOffer.Company.PhoneNumber)
-                            </p>
-                        }
-                        <div class="d-flex w-100 justify-content-between ">
-                            <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; ellipsis; white-space: normal;">
+                            <div class="d-flex w-100">
+                                <div class="p-0 m-0">
+                            @if (jobOffer.Company.Location != null)
+                            {
+                                <p style="width: 100%; text-align:left; text-overflow: ellipsis; white-space: normal;">
+                                    @jobOffer.Company.Name (Location: @jobOffer.Company.Location, Phone Number: @jobOffer.Company.PhoneNumber)
+                                </p>
+                            }
+                            else
+                            {
+                                <p style="width: 100%; overflow: hidden; text-align:left; text-overflow: ellipsis; white-space: normal;">
+                                    @jobOffer.Company.Name (Phone Number: @jobOffer.Company.PhoneNumber)
+                                </p>
+                            }
+                                </div>
+                            </div>
+                        <div class="d-flex w-100">
+                            <p class="p-0 m-0" style="width: 100%; overflow: hidden; text-align:left; text-overflow:ellipsis; white-space: normal;">
                                 Location: @jobOffer.Location
                             </p>
-                            <span class="badge badge-pill badge-warning">@jobOffer.Salary €/month</span>
+                            <div class="p-0 ml-auto">
+                            <span class="badge badge-pill badge-warning" style="font-size:15px">@jobOffer.Salary €/month</span>
+                            </div>
                         </div>
-                    </div>
+                            
+                        </div>
                 }}
         </div>
     </div>

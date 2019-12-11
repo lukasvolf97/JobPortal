@@ -1,4 +1,4 @@
-﻿@model PresentationLayer.Models.JobseekerProfileModel
+﻿@model BusinessLayer.DataTransferObjects.JobseekerDTO
 
 @{
     ViewBag.Title = "Jobseeker Profile";
@@ -69,10 +69,6 @@
             </div>
         </div>
     </div>
-}
-
-@{
-    Html.RenderPartial("~/Views/JobApplication/_JobApplicationListJobseeker.cshtml");
 }
 
 <div>

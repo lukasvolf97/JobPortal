@@ -69,7 +69,7 @@ namespace DataAccessLayer.Migrations
                 Name = "first",
                 Description = "ASD",
                 PhoneNumber = "0908754122",
-                JobOffers = new List<JobOffer> { Job1 },
+                //JobOffers = new List<JobOffer> { Job1 },
                 //JobApplications = new List<JobApplication>()
             };
 
@@ -80,7 +80,7 @@ namespace DataAccessLayer.Migrations
                 Description = "ASDED",
                 Location = "UK",
                 PhoneNumber = "0906445442",
-                JobOffers = new List<JobOffer> { Job2 }
+                //JobOffers = new List<JobOffer> { Job2 }
             };
 
             var JobApplication1 = new JobApplication

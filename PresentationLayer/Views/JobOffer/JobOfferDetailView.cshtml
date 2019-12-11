@@ -30,19 +30,18 @@
 <h4>Salary</h4>
 <p> @Model.Salary</p>
 
-
 @using (Html.BeginForm("Apply", "JobApplication", new { jobOfferId = Model.Id }))
 {
-<div>
-    @Html.HiddenFor(x => Model.Id)
-    @Html.HiddenFor(x => Model.Description)
-    @Html.HiddenFor(x => Model.Company)
-    @Html.HiddenFor(x => Model.Name)
-    @Html.HiddenFor(x => Model.Location)
-    @Html.HiddenFor(x => Model.Salary)
-    <div class="btn-group">
-        <input type="submit" class="btn btn-success" id="btnSubmit" value="Apply" />
+    <div>
+        @Html.HiddenFor(x => Model.Id)
+        @Html.HiddenFor(x => Model.Description)
+        @Html.HiddenFor(x => Model.Company)
+        @Html.HiddenFor(x => Model.Name)
+        @Html.HiddenFor(x => Model.Location)
+        @Html.HiddenFor(x => Model.Salary)
+        <div class="btn-group">
+            <input type="submit" class="btn btn-success" id="btnSubmit" value="Apply" />
+        </div>
     </div>
-    </div>
-    }
+}
 

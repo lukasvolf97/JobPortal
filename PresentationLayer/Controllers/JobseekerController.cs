@@ -1,4 +1,5 @@
 ﻿using BusinessLayer.DataTransferObjects;
+using BusinessLayer.DataTransferObjects.Filters;
 using BusinessLayer.Facades;
 using PresentationLayer.Models;
 using System;
@@ -13,56 +14,37 @@ namespace PresentationLayer.Controllers
     public class JobseekerController : Controller
     {
         private JobseekerFacade jobseekerFacade;
+        private JobApplicationFacade jobApplicationFacade;
 
-        public JobseekerController(JobseekerFacade jobseekerFacade)
+        public JobseekerController(JobseekerFacade jobseekerFacade, JobApplicationFacade jobApplicationFacade)
         {
             this.jobseekerFacade = jobseekerFacade;
+            this.jobApplicationFacade = jobApplicationFacade;
         }
 
         public async Task<ActionResult> Index()
         {
             var userJobseeker = await jobseekerFacade.GetUserAccordingToUsernameAsync(User.Identity.Name.Split('@')[0]);
             var jobseeker = await jobseekerFacade.GetJobseekerById(userJobseeker.Id);
-            var model = InitializeModel(jobseeker);
-            return View("JobseekerProfileView", model);
+            return View("JobseekerProfileView", jobseeker);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Index(JobseekerProfileModel jobseeker)
+        public async Task<ActionResult> Index(JobseekerDTO jobseeker)
         {
             var userJobseeker = await jobseekerFacade.GetUserAccordingToUsernameAsync(User.Identity.Name.Split('@')[0]);
-
-            var jobseekerTmp = new JobseekerDTO()
-            {
-                Id = userJobseeker.Id,
-                FirstName = jobseeker.FirstName,
-                LastName = jobseeker.LastName,
-                TitlesAfterName = jobseeker.TitlesAfterName,
-                TitlesBeforeName = jobseeker.TitlesBeforeName,
-                Address = jobseeker.Address,
-                MobilePhoneNumber = jobseeker.MobilePhoneNumber,
-                Username = userJobseeker.Username,
-                PasswordHash = userJobseeker.PasswordHash,
-                PasswordSalt = userJobseeker.PasswordSalt,
-                Roles = userJobseeker.Roles
-            };
-            await jobseekerFacade.UpdateJobOffer(jobseekerTmp);
-            var model = InitializeModel(await jobseekerFacade.GetJobseekerById(userJobseeker.Id));
-            return  View("JobseekerProfileView", model);
+            KeepUsersData(jobseeker, userJobseeker);
+            await jobseekerFacade.UpdateJobOffer(jobseeker);
+            return  View("JobseekerProfileView", await jobseekerFacade.GetJobseekerById(userJobseeker.Id));
         }
 
-        private JobseekerProfileModel InitializeModel(JobseekerDTO jobseeker)
+        private void KeepUsersData (JobseekerDTO jobseeker, UserDTO userJobseeker)
         {
-            return new JobseekerProfileModel
-            {
-                TitlesBeforeName = jobseeker.TitlesBeforeName,
-                TitlesAfterName = jobseeker.TitlesAfterName, 
-                FirstName = jobseeker.FirstName,
-                LastName = jobseeker.LastName, 
-                MobilePhoneNumber = jobseeker.MobilePhoneNumber,
-                Address = jobseeker.Address,
-                JobApplications = jobseeker.JobApplications
-            };
+            jobseeker.Id = userJobseeker.Id;
+            jobseeker.Username = userJobseeker.Username;
+            jobseeker.PasswordHash = userJobseeker.PasswordHash;
+            jobseeker.PasswordSalt = userJobseeker.PasswordSalt;
+            jobseeker.Roles = userJobseeker.Roles;
         }
     }
 }

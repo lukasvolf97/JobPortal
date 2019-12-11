@@ -25,6 +25,7 @@ namespace DataAccessLayer.Entities
         [MaxLength(15)]
         public string PhoneNumber { get; set; }
 
-        public virtual ICollection<JobOffer> JobOffers { get; set; }
+        //public virtual ICollection<JobOffer> JobOffers { get; set; }
+        //public virtual ICollection<JobApplication> JobApplications { get; set; }
     }
 }

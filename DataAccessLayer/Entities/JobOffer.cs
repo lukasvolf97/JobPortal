@@ -24,8 +24,6 @@ namespace DataAccessLayer.Entities
         [MaxLength(512)]
         public string Description { get; set; }
 
-        public List<string> EntryQuestions { get; set; }
-
         [Required]
         public int Salary { get; set; }
 

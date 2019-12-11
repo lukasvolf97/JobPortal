@@ -8,12 +8,7 @@ namespace PresentationLayer.Models
 {
     public class JobseekerProfileModel
     {
-        public string TitlesBeforeName { get; set; }
-        public string TitlesAfterName { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string MobilePhoneNumber { get; set; }
-        public string Address { get; set; }
+        public JobseekerDTO Jobseeker { get; set; }
         public ICollection<JobApplicationDTO> JobApplications { get; set; }
     }
 }

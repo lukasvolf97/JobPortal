@@ -76,9 +76,9 @@
     <Compile Include="Enums\ApplicationStatus.cs" />
     <Compile Include="Enums\EducationType.cs" />
     <Compile Include="JobPortalDbContext.cs" />
-    <Compile Include="Migrations\201912091714082_init.cs" />
-    <Compile Include="Migrations\201912091714082_init.Designer.cs">
-      <DependentUpon>201912091714082_init.cs</DependentUpon>
+    <Compile Include="Migrations\201912112111157_initial.cs" />
+    <Compile Include="Migrations\201912112111157_initial.Designer.cs">
+      <DependentUpon>201912112111157_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,8 +98,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201912091714082_init.resx">
-      <DependentUpon>201912091714082_init.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201912112111157_initial.resx">
+      <DependentUpon>201912112111157_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -36,6 +36,6 @@ namespace DataAccessLayer.Entities
 
         public EducationType HighestEducation { get; set; }
 
-        public virtual ICollection<JobApplication> JobApplications { get; set; }       
+        //public virtual ICollection<JobApplication> JobApplications { get; set; }       
     }
 }

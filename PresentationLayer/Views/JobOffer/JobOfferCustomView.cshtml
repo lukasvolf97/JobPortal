@@ -1,4 +1,4 @@
-﻿@model PresentationLayer.Models.CustomJobOfferModel
+﻿@model PresentationLayer.Models.JobOfferListViewModel
 @using X.PagedList.Mvc
 @using Humanizer
 
@@ -11,163 +11,133 @@
     @Styles.Render("~/Content/css/PagedList.css")
     @Styles.Render("~/Content/themes/base/jquery-ui.css")
 }
-@if (Model.JobOffers.Count != 0)
-{
-    <div class="row w-100 p-3">
-        <div class="col-lg-12">
-            @using (Html.BeginForm("CustomJobOFfer", "JobOffer"))
+<div class="row w-100 p-3">
+    <div class="col-lg-12">
+        @using (Html.BeginForm("CustomJobOFfer", "JobOffer"))
+        {
+
+            <div class="form-group form-row mb-4 border rounded-pill p-1">
+                @Html.EditorFor(model => model.Filter.Name, new { htmlAttributes = new { @placeholder = "What are you looking for?", @class = "col-lg-12 form-control bg-none border-0" } })
+                @Html.ValidationMessageFor(model => model.Filter.Name, "", new { @class = "text-danger" })
+
+            </div>
+            <div class="form-group text-center">
+                <b>
+                    Salary: <span id="spanOutput"></span>
+                </b>
+                <div id="slider" class="justify-content-center "></div>
+                <input id="txtMin" type="hidden" name="Filter.MinimalSalary" />
+                <input id="txtMax" type="hidden" name="Filter.MaximalSalary" />
+            </div>
+            <br />
+
+            <div class="form-group form-row col-md-5">
+                @Html.LabelFor(model => model.Filter.SortCriteria, "Sort by:", new { @class = "col-form-label col-md-4" })
+                <div class="col-md-8">
+                    @Html.DropDownListFor(model => model.Filter.SortCriteria, Model.AllSortCriteria, "Select...", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.Filter.SortCriteria, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-check form-row col-md-5">
+                @Html.LabelFor(model => model.Filter.SortAscending, "Ascending", new { @class = "form-check-label" })
+                @Html.CheckBoxFor(model => model.Filter.SortAscending, new { htmlAttributes = new { @class = "form-check-input" } })
+                @Html.ValidationMessageFor(model => model.Filter.SortAscending, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="row btn-toolbar justify-content-around" role="toolbar" style="margin-bottom:5px">
+                <div class="btn-group">
+                    <input type="button" class="btn btn-danger" value="Clear" onclick="resetRange();location.href = '@Url.Action("ClearFilter", "JobOffer")'" />
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-success" id="btnSubmit" type="submit" onclick="saveRange()">Filter </button>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+<div class="row w-100 p-3">
+    <div class="col-lg-12">
+        <div class="list-group text-center">
+            @if (Model.JobOffers.Count == 0)
             {
-
-                <div class="form-group form-row mb-4 border rounded-pill p-1">
-                    @Html.EditorFor(model => model.Filter.Name, new { htmlAttributes = new { @placeholder = "What are you looking for?", @class = "col-lg-12 form-control bg-none border-0" } })
-                    @Html.ValidationMessageFor(model => model.Filter.Name, "", new { @class = "text-danger" })
-
-                </div>
-                <div class="form-group text-center">
-                    <b>
-                        Salary: <span id="spanOutput"></span>
-                    </b>
-                    <div id="slider" class="justify-content-center "></div>
-                    <input id="txtMin" type="hidden" name="Filter.MinimalSalary" />
-                    <input id="txtMax" type="hidden" name="Filter.MaximalSalary" />
-                </div>
                 <br />
-
-                <div class="form-group form-row col-md-5">
-                    @Html.LabelFor(model => model.Filter.SortCriteria, "Sort by:", new { @class = "col-form-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.DropDownListFor(model => model.Filter.SortCriteria, Model.AllSortCriteria, "Select...", new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Filter.SortCriteria, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-check form-row col-md-5">
-                    @Html.LabelFor(model => model.Filter.SortAscending, "Ascending", new { @class = "form-check-label" })
-                    @Html.CheckBoxFor(model => model.Filter.SortAscending, new { htmlAttributes = new { @class = "form-check-input" } })
-                    @Html.ValidationMessageFor(model => model.Filter.SortAscending, "", new { @class = "text-danger" })
-                </div>
-
-                <div class="row btn-toolbar justify-content-around" role="toolbar" style="margin-bottom:5px">
-                    <div class="btn-group">
-                        <input type="button" class="btn btn-danger" value="Clear" onclick="resetRange();location.href = '@Url.Action("ClearFilter", "JobOffer")'" />
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-success" id="btnSubmit" type="submit" onclick="saveRange()">Filter </button>
-                    </div>
-                </div>
+                <h2>You have no Job Offers</h2>
+                <hr />
             }
 
-        </div>
-    </div>
+            <div class="d-flex justify-content-center mb-3">
+                <input type="button" class="btn btn-success" value="Add" style="width:150px" onclick="location.href = '@Url.Action("Create", "JobOffer")'" />
+            </div>
 
-    <div class="row w-100 p-3">
-        <div class="col-lg-12">
-            <div class="list-group text-center">
-                @{foreach (var jobOffer in Model.JobOffers)
+            @{foreach (var jobOffer in Model.JobOffers)
+                {
+                    using (Html.BeginForm("Delete", "JobOffer", new { jobOfferId = jobOffer.Id }))
                     {
-                        <div class="list-group-item list-group-item-action clickable-area" style="height: 120px;" @("onclick=GoToDetail('" + jobOffer.Id + "')")>
-                            <div class="d-flex w-100 justify-content-between ">
-                                <h3 class="mb-3" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="thumbnail-label">@jobOffer.Name</h3>
-                                <small>@jobOffer.Date.Humanize()</small>
+                        <div class="list-group-item list-group-item-action clickable-area" style="margin-bottom: 15px" @("onclick=GoToDetail('" + jobOffer.Id + "')")>
+
+                            <div class="d-flex w-100">
+                                <div class="p-0 m-0">
+                                    <h3 style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="thumbnail-label">@jobOffer.Name</h3>
+                                </div>
+                                <div class="p-0 ml-auto">
+                                    <small>@jobOffer.Date.Humanize()</small>
+                                </div>
                             </div>
 
-
-                            @if (jobOffer.Company.Location != null)
-                            {
-                                <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; text-overflow: ellipsis; white-space: normal;">
-                                    @jobOffer.Company.Name (Location: @jobOffer.Company.Location, Phone Number: @jobOffer.Company.PhoneNumber)
-                                </p>
-                            }
-                            else
-                            {
-                                <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; text-overflow: ellipsis; white-space: normal;">
-                                    @jobOffer.Company.Name (Phone Number: @jobOffer.Company.PhoneNumber)
-                                </p>
-                            }
-                            <div class="d-flex w-100 justify-content-between ">
-                                <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; ellipsis; white-space: normal;">
+                            <div class="d-flex w-100">
+                                <div class="p-0 m-0">
+                                    @if (jobOffer.Company.Location != null)
+                                    {
+                                        <p style="width: 100%; text-align:left; text-overflow: ellipsis; white-space: normal;">
+                                            @jobOffer.Company.Name (Location: @jobOffer.Company.Location, Phone Number: @jobOffer.Company.PhoneNumber)
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p style="width: 100%; overflow: hidden; text-align:left; text-overflow: ellipsis; white-space: normal;">
+                                            @jobOffer.Company.Name (Phone Number: @jobOffer.Company.PhoneNumber)
+                                        </p>
+                                    }
+                                </div>
+                            </div>
+                            <div class="d-flex w-100">
+                                <p class="p-0 m-0" style="width: 100%; overflow: hidden; text-align:left; text-overflow:ellipsis; white-space: normal;">
                                     Location: @jobOffer.Location
                                 </p>
-                                <span class="badge badge-pill badge-warning">@jobOffer.Salary €/month</span>
+                                <div class="p-0 ml-auto">
+                                    <span class="badge badge-pill badge-warning" style="font-size:15px">@jobOffer.Salary €/month</span>
+                                </div>
                             </div>
+                            <hr />
+                            <div class="d-flex w-100 justify-content-center">
+                                <input type="submit" class="btn btn-danger" value="Delete" />
+                            </div>
+
                         </div>
-                    }}
-            </div>
+                    }
+                }
+            }
         </div>
     </div>
-    <div class="row justify-content-center">
-        @Html.PagedListPager(Model.JobOffers, page => Url.Action("CustomJobOffer", new { page }), new PagedListRenderOptions
-   {
-       LiElementClasses = new string[] { "page-item" },
-       PageClasses = new string[] { "page-link" }
-   })
+</div>
+<div class="row w-100 p-3">
+    <div class="col-lg-12">
+        <div class="d-flex justify-content-center">
+            @Html.PagedListPager(Model.JobOffers, page => Url.Action("CustomJobOffer", new { page }), new PagedListRenderOptions
+            {
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" }
+            })
+        </div>
     </div>
-   }
-   else
-   {
-    <br />
-    <h2>You have no Job Offers</h2>
-    <hr/>
-   }
+</div>
 <script>
     function GoToDetail(id) {
         window.location = "/JobOffer/Details/" + id;
     }
 </script>
-
-<h2>Create Job Offer</h2>
-
-@using (Html.BeginForm("Create", "JobOffer", new { jobOffer = @Model }))
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-        <div class="form-group row">
-            @Html.LabelFor(model => model.NewJobOffer.Name, htmlAttributes: new { @class = "col-form-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NewJobOffer.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NewJobOffer.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group row">
-            @Html.LabelFor(model => model.NewJobOffer.Description, htmlAttributes: new { @class = "col-form-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NewJobOffer.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NewJobOffer.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group row">
-            @Html.LabelFor(model => model.NewJobOffer.Location, htmlAttributes: new { @class = "col-form-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NewJobOffer.Location, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NewJobOffer.Location, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group row">
-            @Html.LabelFor(model => model.NewJobOffer.Salary, htmlAttributes: new { @class = "col-form-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NewJobOffer.Salary, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NewJobOffer.Salary, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index", "JobOffer")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/Scripts/jquery-ui-1.12.1.js")
