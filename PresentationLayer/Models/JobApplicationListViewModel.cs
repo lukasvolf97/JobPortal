@@ -7,7 +7,7 @@ namespace PresentationLayer.Models
 {
     public class JobApplicationListViewModel
     {
-        public string[] JobApplicationSortCriteria => new[] { nameof(JobApplicationDTO.ApplicationStatus), nameof(JobApplicationDTO.Company), nameof(JobApplicationDTO.JobOffer), nameof(JobApplicationDTO.Jobseeker) };
+        public string[] JobApplicationSortCriteria => new[] { nameof(JobApplicationDTO.ApplicationStatus), nameof(JobApplicationDTO.CompanyId), nameof(JobApplicationDTO.JobOfferId), nameof(JobApplicationDTO.JobseekerId) };
 
         public IPagedList<JobApplicationDTO> JobApplications { get; set; }
 

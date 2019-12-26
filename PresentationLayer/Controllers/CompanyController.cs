@@ -22,9 +22,28 @@ namespace PresentationLayer.Controllers
         public async Task<ActionResult> Index()
         {
             var userCompany = await companyFacade.GetUserAccordingToUsernameAsync(User.Identity.Name.Split('@')[0]);
-            var company = await companyFacade.GetCompanyById(userCompany.Id);
+            var company = await companyFacade.GetCompanyById(userCompany.Id);       
             var model = InitializeModel(company);
             return View("CompanyProfileView",model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Index(CompanyDTO company)
+        {
+            var userCompany = await companyFacade.GetUserAccordingToUsernameAsync(User.Identity.Name.Split('@')[0]);
+            KeepUsersData(company, userCompany);
+            await companyFacade.UpdateCompany(company);
+            var model = InitializeModel(await companyFacade.GetCompanyById(userCompany.Id));
+            return View("CompanyProfileView", model);
+        }
+
+        private void KeepUsersData(CompanyDTO company, UserDTO userCompany)
+        {
+            company.Id = userCompany.Id;
+            company.Username = userCompany.Username;
+            company.PasswordHash = userCompany.PasswordHash;
+            company.PasswordSalt = userCompany.PasswordSalt;
+            company.Roles = userCompany.Roles;
         }
 
         private CompanyProfileModel InitializeModel(CompanyDTO company)
