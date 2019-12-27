@@ -47,16 +47,46 @@
         <div class="list-group text-center">
             @{foreach (var jobApplication in Model.JobApplications)
                 {
-                        <div class="list-group-item" style="height: 120px;">
+                        <div class="list-group-item" style="height: 140px;">
                             <div class="d-flex w-100 justify-content-between ">
                                 <small>@jobApplication.ApplicationStatus</small>
                             </div>
 
                             <div class="d-flex w-100 justify-content-between ">
                                 <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; ellipsis; white-space: normal;">
-                                    Id: @jobApplication.Id
+                                    Job offer: @jobApplication.JobOffer.Name
                                 </p>
                             </div>
+                            @if (User.IsInRole("Jobseeker") || User.IsInRole("Admin"))
+                            {
+                                <div class="d-flex w-100 justify-content-between ">
+                                    <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; ellipsis; white-space: normal;">
+                                        Company: @jobApplication.Company.Name
+                                    </p>
+                                </div>
+
+                                <div class="d-flex w-100 justify-content-between ">
+                                    <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; ellipsis; white-space: normal;">
+                                        Location: @jobApplication.Company.Location
+                                    </p>
+                                </div>
+                            }
+
+                            @if (User.IsInRole("Company") || User.IsInRole("Admin"))
+                            {
+                                <div class="d-flex w-100 justify-content-between ">
+                                    <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; ellipsis; white-space: normal;">
+                                        Jobseeker: @jobApplication.Jobseeker.TitlesBeforeName  @jobApplication.Jobseeker.FirstName @jobApplication.Jobseeker.LastName @jobApplication.Jobseeker.TitlesAfterName
+                                    </p>
+                                </div>
+
+                                <div class="d-flex w-100 justify-content-between ">
+                                    <p class="mb-1" style="width: 100%; overflow: hidden; text-align:left; ellipsis; white-space: normal;">
+                                        Education: @jobApplication.Jobseeker.HighestEducation
+                                    </p>
+                                </div>
+                            }
+
 
                             @{ if (jobApplication.ApplicationStatus == DataAccessLayer.Enums.ApplicationStatus.Undecided)
                                 {
@@ -71,8 +101,8 @@
                                             <button class="btn btn-danger" id="btnSubmit" type="submit" onclick="location.href = '@Url.Action("Cancel", "JobApplication", new { jobApplicationId = jobApplication.Id})'">Cancel</button>
                                         }
                                     </div>
-                                    }
                                 }
+                            }
                         </div>
                 }}
         </div>

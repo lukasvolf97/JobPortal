@@ -85,23 +85,7 @@
                                     <small>@jobOffer.Date.Humanize()</small>
                                 </div>
                             </div>
-
-                            <div class="d-flex w-100">
-                                <div class="p-0 m-0">
-                                    @if (jobOffer.Company.Location != null)
-                                    {
-                                        <p style="width: 100%; text-align:left; text-overflow: ellipsis; white-space: normal;">
-                                            @jobOffer.Company.Name (Location: @jobOffer.Company.Location, Phone Number: @jobOffer.Company.PhoneNumber)
-                                        </p>
-                                    }
-                                    else
-                                    {
-                                        <p style="width: 100%; overflow: hidden; text-align:left; text-overflow: ellipsis; white-space: normal;">
-                                            @jobOffer.Company.Name (Phone Number: @jobOffer.Company.PhoneNumber)
-                                        </p>
-                                    }
-                                </div>
-                            </div>
+                         
                             <div class="d-flex w-100">
                                 <p class="p-0 m-0" style="width: 100%; overflow: hidden; text-align:left; text-overflow:ellipsis; white-space: normal;">
                                     Location: @jobOffer.Location

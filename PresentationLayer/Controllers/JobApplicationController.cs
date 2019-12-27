@@ -105,17 +105,22 @@ namespace PresentationLayer.Controllers
             var jobOffer = await jobOfferFacade.GetJobOfferById(jobOfferId);
             var user = await jobseekerFacade.GetUserAccordingToUsernameAsync(User.Identity.Name);
             var jobseeker = await jobseekerFacade.GetJobseekerById(user.Id);
-            await jobApplicationFacade.CreateJobApplication(
-                new JobApplicationDTO
-                {
-                    ApplicationStatus = ApplicationStatus.Undecided,
-                    JobOfferId = jobOffer.Id,
-                    JobOffer = null,
-                    CompanyId = jobOffer.Company.Id,
-                    Company = null,
-                    Jobseeker = null,
-                    JobseekerId = jobseeker.Id
-                });
+            var usersApplications = await jobApplicationFacade.ListAllJobApplications();
+            if(!usersApplications.Items.Where(application => application.JobOfferId == jobOffer.Id && application.JobseekerId == jobseeker.Id).Any())
+            {
+                await jobApplicationFacade.CreateJobApplication(
+                    new JobApplicationDTO
+                    {
+                        ApplicationStatus = ApplicationStatus.Undecided,
+                        JobOfferId = jobOffer.Id,
+                        JobOffer = null,
+                        CompanyId = jobOffer.Company.Id,
+                        Company = null,
+                        Jobseeker = null,
+                        JobseekerId = jobseeker.Id
+                    });
+            }
+            
             return RedirectToAction("Index", "JobOffer");
         }
     }
