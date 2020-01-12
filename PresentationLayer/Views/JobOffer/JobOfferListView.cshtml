@@ -64,8 +64,10 @@
         <div class="list-group text-center">
             @{foreach (var jobOffer in Model.JobOffers)
                 {
-                        <div class="list-group-item list-group-item-action clickable-area" style="height: 130px; margin-bottom: 15px" @("onclick=GoToDetail('" + jobOffer.Id + "')")>
-                            
+                    using (Html.BeginForm("Delete", "JobOffer", new { jobOfferId = jobOffer.Id }))
+                    {                    
+                        <div class="list-group-item list-group-item-action clickable-area" style="margin-bottom: 15px" @("onclick=GoToDetail('" + jobOffer.Id + "')")>
+
                             <div class="d-flex w-100">
                                 <div class="p-0 m-0">
                                     <h3 style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" id="thumbnail-label">@jobOffer.Name</h3>
@@ -77,49 +79,60 @@
 
                             <div class="d-flex w-100">
                                 <div class="p-0 m-0">
-                            @if (jobOffer.Company.Location != null)
-                            {
-                                <p style="width: 100%; text-align:left; text-overflow: ellipsis; white-space: normal;">
-                                    @jobOffer.Company.Name (Location: @jobOffer.Company.Location, Phone Number: @jobOffer.Company.PhoneNumber)
-                                </p>
-                            }
-                            else
-                            {
-                                <p style="width: 100%; overflow: hidden; text-align:left; text-overflow: ellipsis; white-space: normal;">
-                                    @jobOffer.Company.Name (Phone Number: @jobOffer.Company.PhoneNumber)
-                                </p>
-                            }
+                                    @if (jobOffer.Company.Location != null)
+                                    {
+                                        <p style="width: 100%; text-align:left; text-overflow: ellipsis; white-space: normal;">
+                                            @jobOffer.Company.Name (Location: @jobOffer.Company.Location, Phone Number: @jobOffer.Company.PhoneNumber)
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p style="width: 100%; overflow: hidden; text-align:left; text-overflow: ellipsis; white-space: normal;">
+                                            @jobOffer.Company.Name (Phone Number: @jobOffer.Company.PhoneNumber)
+                                        </p>
+                                    }
                                 </div>
                             </div>
-                        <div class="d-flex w-100">
-                            <p class="p-0 m-0" style="width: 100%; overflow: hidden; text-align:left; text-overflow:ellipsis; white-space: normal;">
-                                Location: @jobOffer.Location
-                            </p>
-                            <div class="p-0 ml-auto">
-                            <span class="badge badge-pill badge-warning" style="font-size:15px">@jobOffer.Salary €/month</span>
+                            <div class="d-flex w-100">
+                                <p class="p-0 m-0" style="width: 100%; overflow: hidden; text-align:left; text-overflow:ellipsis; white-space: normal;">
+                                    Location: @jobOffer.Location
+                                </p>
+                                <div class="p-0 ml-auto">
+                                    <span class="badge badge-pill badge-warning" style="font-size:15px">@jobOffer.Salary €/month</span>
+                                </div>
                             </div>
-                        </div>
+                            <hr />
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div class="d-flex w-100 justify-content-center">
+                                    <input type="submit" class="btn btn-danger" value="Delete" />
+                                </div>
+                            }
                             
-                        </div>
-                }}
+                        </div>                 
+                        }
+                    }}
         </div>
     </div>
 </div>
-<div class="row justify-content-center">
-    @Html.PagedListPager(Model.JobOffers, page => Url.Action("Index", new { page }), new PagedListRenderOptions
-    {
-        LiElementClasses = new string[] { "page-item" },
-        PageClasses = new string[] { "page-link" }
-    })
+<div class="row w-100 p-3">
+    <div class="col-lg-12">
+        <div class="row justify-content-center">
+            @Html.PagedListPager(Model.JobOffers, page => Url.Action("Index", new { page }), new PagedListRenderOptions
+            {
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" }
+            })
+        </div>
+    </div>
 </div>
+        <script>
+            function GoToDetail(id) {
+                window.location = "/JobOffer/Details/" + id;
+            }
+        </script>
 
-<script>
-    function GoToDetail(id) {
-        window.location = "/JobOffer/Details/" + id;
-    }
-</script>
-
-@section scripts{
-    @Scripts.Render("~/Scripts/jquery-ui-1.12.1.js")
-    @Scripts.Render("~/Scripts/slider.js")
-}
+        @section scripts{
+            @Scripts.Render("~/Scripts/jquery-ui-1.12.1.js")
+            @Scripts.Render("~/Scripts/slider.js")
+        }

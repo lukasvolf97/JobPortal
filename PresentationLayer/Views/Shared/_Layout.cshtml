@@ -24,7 +24,7 @@
                     @if (User.IsInRole("Company") || User.IsInRole("Admin") || User.IsInRole("Jobseeker"))
                     {
                         <li>@Html.ActionLink("Job Applications", "Index", "JobApplication", null, new { @class = "nav-link" })</li>
-                        if (User.IsInRole("Company") || User.IsInRole("Admin"))
+                        if (User.IsInRole("Company"))
                         {
                         <li>@Html.ActionLink("Your Job Offers", "CustomJobOffer", "JobOffer", null, new { @class = "nav-link" })</li>
                         }
@@ -42,7 +42,7 @@
                                     <div class="dropdown-divider"></div>
                                     @Html.ActionLink("Profile", "Index", "Company", null, new { @class = "dropdown-item" })
                                 }
-                                else
+                                @if (User.IsInRole("Jobseeker"))
                                 {
                                     <div class="dropdown-divider"></div>
                                     @Html.ActionLink("Profile", "Index", "Jobseeker", null, new { @class = "dropdown-item" })

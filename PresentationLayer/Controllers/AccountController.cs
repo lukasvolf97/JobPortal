@@ -51,7 +51,7 @@ namespace PresentationLayer.Controllers
                 string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
                 var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                 HttpContext.Response.Cookies.Add(authCookie);
-
+                FormsAuthentication.SignOut();
                 return RedirectToAction("Index", "Home");
             } 
             catch (ArgumentException)
@@ -76,7 +76,7 @@ namespace PresentationLayer.Controllers
                 string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
                 var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                 HttpContext.Response.Cookies.Add(authCookie);
-
+                FormsAuthentication.SignOut();
                 return RedirectToAction("Index", "Home");
             }
             catch (ArgumentException)

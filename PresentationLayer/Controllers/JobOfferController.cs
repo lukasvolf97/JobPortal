@@ -19,11 +19,13 @@ namespace PresentationLayer.Controllers
 
         private JobOfferFacade jobOfferFacade;
         private CompanyFacade companyFacade;
+        private JobApplicationFacade JobApplicationFacade;
 
-        public JobOfferController(JobOfferFacade jobOfferFacade, CompanyFacade companyFacade)
+        public JobOfferController(JobOfferFacade jobOfferFacade, CompanyFacade companyFacade, JobApplicationFacade jobApplicationFacade)
         {
             this.jobOfferFacade = jobOfferFacade;
             this.companyFacade = companyFacade;
+            this.JobApplicationFacade = jobApplicationFacade;
         }
 
         public async Task<ActionResult> Index(int page = 1)
@@ -32,7 +34,6 @@ namespace PresentationLayer.Controllers
             filter.RequestedPageNumber = page;
 
             var allJobOffers = await jobOfferFacade.GetJobOffersAsync(new JobOfferFilterDTO());
-
             var result = await jobOfferFacade.GetJobOffersAsync(filter);
             var model = InitializeJobOfferListViewModel(result, (int)allJobOffers.TotalItemsCount);
             return View("JobOfferListView", model);
@@ -112,7 +113,20 @@ namespace PresentationLayer.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(Guid jobOfferId)
         {
+            var jobApplications = await JobApplicationFacade.ListAllJobApplications();
+            foreach(var jobApp in jobApplications.Items)
+            {
+                if(jobApp.JobOfferId == jobOfferId)
+                {
+                    await JobApplicationFacade.DeleteJobApplication(jobApp.Id);
+                }             
+            }
+            
             await jobOfferFacade.DeleteJobOffer(jobOfferId);
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Index", "JobOffer");
+            }
             return RedirectToAction("CustomJobOffer", "JobOffer");
         }
 

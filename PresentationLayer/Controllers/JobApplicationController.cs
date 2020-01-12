@@ -33,6 +33,7 @@ namespace PresentationLayer.Controllers
             this.companyFacade = companyFacade;
         }
 
+        [Authorize(Roles = "Company,Jobseeker,Admin")]
         public async Task<ActionResult> Index(int page = 1)
         {
             JobApplicationFilterDTO filter;
@@ -40,32 +41,55 @@ namespace PresentationLayer.Controllers
                 filter = Session[FilterSessionKey] as JobApplicationFilterDTO ?? new JobApplicationFilterDTO { PageSize = PageSize };
             else
             {
-                var user = await companyFacade.GetUserAccordingToUsernameAsync(User.Identity.Name);
-                filter = Session[FilterSessionKey] as JobApplicationFilterDTO ?? new JobApplicationFilterDTO { CompanyId = user.Id, PageSize = PageSize };
+                if (User.IsInRole("Company"))
+                {
+                    var user = await companyFacade.GetUserAccordingToUsernameAsync(User.Identity.Name);
+                    filter = new JobApplicationFilterDTO { CompanyId = user.Id, PageSize = PageSize };
+
+                }
+                else
+                {
+                    var user = await jobseekerFacade.GetUserAccordingToUsernameAsync(User.Identity.Name);
+                    filter = new JobApplicationFilterDTO { JobseekerId = user.Id, PageSize = PageSize };
+
+                }
             }
 
             filter.RequestedPageNumber = page;
-
             var allJobApplications = await jobApplicationFacade.GetJobApplicationsAsync(new JobApplicationFilterDTO());
-
             var result = await jobApplicationFacade.GetJobApplicationsAsync(filter);
-            var model = InitializeProductListViewModel(result, (int)allJobApplications.TotalItemsCount);
+            var model = InitializeJobApplicationListViewModel(result, (int)allJobApplications.TotalItemsCount);
             return View("JobApplicationListView", model);
         }
 
+        [Authorize(Roles = "Company,Jobseeker,Admin")]
         [HttpPost]
         public async Task<ActionResult> Index(JobApplicationListViewModel model)
         {
             model.Filter.PageSize = PageSize;
-            Session[FilterSessionKey] = model.Filter;
+            if (User.IsInRole("Admin"))
+                Session[FilterSessionKey] = model.Filter;
+            else
+            {
+                if (User.IsInRole("Company"))
+                {
+                    var user = await companyFacade.GetUserAccordingToUsernameAsync(User.Identity.Name);
+                    model.Filter.CompanyId = user.Id;
+                }
+                if (User.IsInRole("Jobseeker"))
+                {
+                    var user = await jobseekerFacade.GetUserAccordingToUsernameAsync(User.Identity.Name);
+                    model.Filter.JobseekerId = user.Id;
+                }
+            }
 
-            var allJobOffers = await jobApplicationFacade.GetJobApplicationsAsync(new JobApplicationFilterDTO());
+            var allJobApplications = await jobApplicationFacade.GetJobApplicationsAsync(new JobApplicationFilterDTO());
             var result = await jobApplicationFacade.GetJobApplicationsAsync(model.Filter);
-            var newModel = InitializeProductListViewModel(result, (int)allJobOffers.TotalItemsCount);
+            var newModel = InitializeJobApplicationListViewModel(result, (int)allJobApplications.TotalItemsCount);
             return View("JobApplicationListView", newModel);
         }
 
-        private JobApplicationListViewModel InitializeProductListViewModel(QueryResultDto<JobApplicationDTO, JobApplicationFilterDTO> result, int totalItemsCount)
+        private JobApplicationListViewModel InitializeJobApplicationListViewModel(QueryResultDto<JobApplicationDTO, JobApplicationFilterDTO> result, int totalItemsCount)
         {
             return new JobApplicationListViewModel
             {

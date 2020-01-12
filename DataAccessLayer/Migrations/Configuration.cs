@@ -111,6 +111,17 @@ namespace DataAccessLayer.Migrations
                 ApplicationStatus = Enums.ApplicationStatus.Undecided
             };
 
+            var Admin = new Admin
+            {
+                Id = Guid.Parse("2dc37ea7-9572-4699-9c7e-12d55bf50ee2"),
+                UserName = "admin",
+                PasswordHash = "7S0oJnS8oX0J/18c+koqOwmHFgk=",
+                PasswordSalt = "ySe0ygqn9Mes9KFr2uxXdw==",
+                Roles = "Admin"
+            };
+
+            context.Admins.Add(Admin);
+
 
             //Comp1.JobApplications.Add(JobApplication1);
             //Comp1.JobApplications.Add(JobApplication2);
